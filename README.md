@@ -14,6 +14,6 @@ content on this website is covered by a [Creative Commons CC-BY][cc] license.
 The publications mentioned and datasets used are covered by their respective 
 licenses and usage agreements. Please refer to those sources for details.
 
-[website]: https://chuang1118.github.io/distal.github.io/DISTAL/ "Analysis website"
+[website]: https://chuang1118.github.io/distral/ "Analysis website"
 [mit]: https://choosealicense.com/licenses/mit/ "MIT License"
 [cc]: https://creativecommons.org/licenses/by/4.0/ "CC-BY License"
