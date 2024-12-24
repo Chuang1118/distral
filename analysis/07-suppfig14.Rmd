@@ -1,0 +1,219 @@
+---
+title: "Supplementary figure 14"
+---
+
+```{r knitr, include = FALSE}
+DOCNAME = "Suppfigure-14"
+NOW <- Sys.time()
+
+# Time chunks during knitting
+knitr::knit_hooks$set(timeit = function(before) {
+    if (before) {
+        print(paste("Start:", Sys.time()))
+        NOW <<- Sys.time()
+    } else {
+        print(paste("Stop:", Sys.time()))
+        print(Sys.time() - NOW)
+    }
+})
+
+knitr::opts_chunk$set(
+    autodep        = TRUE,
+    cache          = TRUE,
+    cache.path     = paste0("cache/", DOCNAME, "/"),
+    cache.comments = FALSE,
+    echo           = TRUE,
+    error          = FALSE,
+    fig.align      = "center",
+    fig.width      = 10,
+    fig.height     = 8,
+    message        = FALSE,
+    warning        = FALSE,
+    timeit         = TRUE
+)
+```
+
+```{r libaries, cache = FALSE}
+# scRNA-seq
+library(Seurat)
+#packageVersion("Seurat")
+
+# Plotting
+library("ggplot2")
+library(cowplot)
+
+# Presentation
+library("knitr")
+
+# Others
+library(stringr)
+library("readxl")
+library("rstatix")
+library(ggpubr)
+library('scales')
+library( "RColorBrewer")
+
+```
+
+```{r source, cache = FALSE}
+source(here::here("R/00_generalDeps.R"))
+source(here::here("R/output.R"))
+```
+
+```{r depends-paths}
+filt_path <- here::here("data/processed/figure4_output_seurat.rds")
+```
+
+Introduction
+============
+
+In this document we are going to perform plotting supplementary figure 14 panel A 
+using `Seurat`.
+
+
+Loading `seurat` object processed
+```{r load, cache.extra = tools::md5sum(filt_path)}
+if (file.exists(filt_path)) {
+    subset <- readRDS(filt_path)
+} else {
+    stop("Supplementary figure 14  dataset is missing. ",
+         "Please check Input first.",
+         call. = FALSE)
+}
+```
+
+```{r, echo=FALSE,include = FALSE}
+# You need this code to conduct the magic dependences attaching...
+DT::datatable(matrix())
+```
+
+visualization  
+==============
+
+Literature-based-gene set score
+
+```{r plot-data, echo=TRUE, message=FALSE, warning=FALSE, results='asis'}
+
+gene_set_pub <- read_excel(paste0(here::here("data/processed/Gene set publications.xlsx")), col_names = FALSE, sheet = "Feuil1")
+gene_set_pub <- as.data.frame(gene_set_pub)
+
+
+# stocke in list
+boxplot_list = list()
+df_scores <- subset@meta.data[,c("UniqueCellID","SortPheno")]
+
+for( j in c(3:5,10,12,15,16)){
+  paper_names = paste0(gene_set_pub[1,j],"_",gene_set_pub[3,j], "_",gene_set_pub[4,j], "_",gene_set_pub[5,j])
+  paper_names = gsub('\\(','',paper_names)
+  paper_names = gsub('\\)','',paper_names)
+  paper_names = gsub(' ','_',paper_names)
+  cat("###",paper_names, '<br>', '\n')
+
+  genes =   gene_set_pub[11:nrow(gene_set_pub),j]
+  # Remove NA
+  genes <- genes[!is.na(genes)]
+  # filtering
+  genes = genes[genes %in% rownames(subset)]
+
+  subset <- AddModuleScore(subset,
+                              features = list(genes),
+                              ctrl = 5,
+                              name = paper_names)
+
+  df <- subset@meta.data
+  df$scores_tempo = df[,ncol(df)]
+
+  stat = compare_means( scores_tempo ~ SortPheno, data = df)
+
+  # Create datatable
+  cat(knitr::knit_print(DT::datatable( as.data.frame(stat), height = "100%", width = "100%",
+                                       class = "compact",
+                                       rownames = FALSE,
+                                       #colnames = c("Sample", "Nb. Cells"),
+                                       options = list(dom = "<'row'rt>", # Set elements for CSS formatting ('<Blf><rt><ip>')
+                                                      autoWidth = FALSE,
+                                                      columnDefs = list( # Center all columns
+                                                        list( targets = 0:(ncol(stat)-1),
+                                                              className = 'dt-center')),
+                                                      orderClasses = FALSE, # Disable flag for CSS to highlight columns used for ordering (for performance)
+                                                      paging = FALSE, # Disable pagination (show all)
+                                                      processing = TRUE,
+                                                      scrollCollapse = TRUE,
+                                                      scroller = TRUE,  # Only load visible data
+                                                      scrollX = TRUE,
+                                                      scrollY = "525px",
+                                                      stateSave = TRUE))
+  ))
+  
+  p <- ggplot(df, aes(x=SortPheno, y=eval(parse(text = paste0(paper_names, "1"))), color =SortPheno)) + 
+    geom_boxplot(color="grey") + geom_jitter(shape=16, position=position_jitter(0.2))+
+    theme_classic() +
+    #scale_color_manual(values=col)+
+    theme(axis.text.x = element_text(angle = 0))
+  
+  p <- p + stat_compare_means(comparisons = list(c("TTneg" ,  "TTpos")), label = "p.signif") + ylab(paper_names)
+  print(p)
+  
+  # variable scope: local
+  boxplot_list[[paper_names]] <- local({
+        paper_names <- paper_names
+        ggplot(df, aes(x=SortPheno, y=eval(parse(text = paste0(paper_names, "1"))), color =SortPheno)) + 
+          geom_boxplot(color="grey") + geom_jitter(shape=16, position=position_jitter(0.2))+
+          theme_classic() +
+         #scale_color_manual(values=col)+
+          theme(legend.position = 'none') + 
+          stat_compare_means(comparisons = list(c("TTneg" ,  "TTpos")), label = "p.signif") +
+          xlab("") + ylab("Gene set score") + ggtitle(paper_names)
+    })
+  
+  df_scores[[paper_names]] = subset@meta.data[[paste0(paper_names, "1")]]
+  
+  cat("\n\n")
+}
+
+```
+
+
+Supplementary figure 14
+=======
+
+Panel A
+--------------
+
+```{r suppfig4-pA, fig.width = 14, fig.height = 10}
+
+fig <- plot_grid(boxplot_list[[1]],
+                 boxplot_list[[4]],
+                 boxplot_list[[6]],
+                 boxplot_list[[2]], 
+                 boxplot_list[[5]], 
+                 boxplot_list[[7]], 
+                 boxplot_list[[3]],
+                 ncol = 3, labels = "A")
+
+dir.create(here::here("output", DOCNAME), showWarnings = FALSE)
+
+ggsave(here::here("output", DOCNAME, "suppfigure14-panelA.pdf"), fig,
+        width = 16, height = 11, scale = 1)
+ggsave(here::here("output", DOCNAME, "suppfigure14-panelA.png"), fig,
+        width = 16, height = 11, scale = 1)
+
+fig
+
+```
+
+
+Output files
+==============
+
+```{r save}
+saveRDS(subset, here::here("data/processed/figure14_output_seurat.rds"))
+write.table(df_scores, here::here("output", DOCNAME,"suppfigure14-raw_data.csv"), row.names=TRUE,col.names=TRUE, sep =',')
+```
+
+Session information
+==============
+
+```{r session-info, cache = FALSE}
+devtools::session_info()
+```

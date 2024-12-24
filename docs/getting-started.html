@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Getting started</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Autoreactive CD4 T cells in liver disease</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="getting-started.html">Getting started</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="02-fig2.html">Figure 2</a>
+    </li>
+    <li>
+      <a href="03-fig4.html">Figure 4</a>
+    </li>
+    <li>
+      <a href="04-suppfig2.html">Supplementary figure 2</a>
+    </li>
+    <li>
+      <a href="06-suppfig4.html">Supplementary figure 4</a>
+    </li>
+    <li>
+      <a href="07-suppfig14.html">Supplementary figure 14</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="license.html">License</a>
+</li>
+<li>
+  <a href="https://github.com/Chuang1118/distal">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Getting started</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2024-12-24
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>proj_distal/analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version 1.7.1). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed12345code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(12345)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed12345code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(12345)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongnoversioncontrol"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>Repository version:</strong> no version control </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongnoversioncontrol" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Tracking code development and connecting the code version to the results is critical for reproducibility. To start using Git, open the Terminal and type <code>git init</code> in your project directory.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+This project is not being versioned with Git. To obtain the full reproducibility benefits of using workflowr, please see <code>?wflow_start</code>.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<p>This page describes how to download the data and code used in this analysis, set up the project directory and rerun the analysis. I have used the <a href="https://jdblischak.github.io/workflowr/" title="Workflowr"><code>workflowr</code></a> package to organize the analysis and insert reproducibility information into the output documents. The <a href="https://rstudio.github.io/packrat/" title="Packrat"><code>packrat</code></a> package has also been used to manage R package versions and dependencies.</p>
+<div id="getting-the-code" class="section level1">
+<h1>Getting the code</h1>
+<p>All the code and outputs of analyses are available from GitHub at <a href="https://github.com/MilpiedLab/Autoreactive-CD4-T-cells-in-liver-disease" class="uri">https://github.com/MilpiedLab/Autoreactive-CD4-T-cells-in-liver-disease</a>. If you want to replicate the analysis you can either fork the repository and clone it or download the repository as a zipped directory.</p>
+<p>Once you have a local copy of the repository you should see the following directory structure:</p>
+<ul>
+<li><code>analysis/</code> - Contains the R Markdown documents with the various stages of analysis. These are numbered according to the order they should be run.</li>
+<li><code>data/</code> - This directory contains the data files used in the analysis with each dataset in its own sub-directory (see <a href="#data">Getting the data</a> for details). Processed intermediate data files will also be placed here.</li>
+<li><code>output/</code> - Directory for output files produced by the analyses, each analysis step has its own sub-directory.</li>
+<li><code>docs/</code> - This directory contains the analysis website, including image files.</li>
+<li><code>R/</code> - R scripts with custom functions used in some analysis stages.</li>
+<li><code>scripts/</code> - Python scripts and examples of how command line tools were run.</li>
+<li><code>packrat/</code> - Directory created by <code>packrat</code> that contains details of the R packages and versions used in the analyses.</li>
+<li><code>README.md</code> - README describing the project.</li>
+<li><code>.Rprofile</code> - Custom R profile for the project including set up for <code>packrat</code> and <code>workflowr</code>.</li>
+<li><code>.gitignore</code> - Details of files and directories that are excluded from the repository.</li>
+<li><code>proj_distal.Rproj</code> - RStudio project file.</li>
+</ul>
+</div>
+<div id="installing-r-packages" class="section level1">
+<h1>Installing R packages</h1>
+<p>R Packages and dependencies for this project are managed using <a href="https://rstudio.github.io/packrat/" title="Packrat"><code>packrat</code></a>. This should allow you to install and use the same package versions as we have used for the analysis. <code>packrat</code> should automatically take care of this process for you the first time that you open R in the project directory. If for some reason this does not happen you may need to run the following commands:</p>
+<pre class="r"><code>#install.packages(&quot;packrat&quot;)
+#packrat::restore()</code></pre>
+<p>Note that a clean install of all the required packages can take a significant amount of time when the project is first opened.</p>
+</div>
+<div id="data" class="section level1">
+<h1>Getting the data</h1>
+<p>The raw sequencing data from this project is available on NCBI GEO under accession numbers <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE270739" title="GEO">GSE270739</a>, <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE269661" title="GEO">GSE269661</a> and <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE269525" title="GEO">GSE269525</a>. Some pre-processing and quality control of the datasets was done to produce datasets in a form suitable for the analyses that are presented here. If you don’t want to perform the preprocessing and quality control steps yourself, the processed datasets are available from this <a href="https://zenodo.org/records/14516943" title="Zenodo">Zenodo repository</a>. This repository also contains intermediate files from the statistical analysis.</p>
+<p>Once the processed data has been has been produced or downloaded it needs to be placed in the correct location. The analysis code assumes the following directory structure inside the <code>data/</code> directory:</p>
+<ul>
+<li><code>processed/</code> - Input processed data required to run the analyses, and output datasets after analysis. Files are named and numbered according to the figure in which the results are described.
+<ul>
+<li><code>figure2_input_UMI.csv</code> - <code>csv</code> the expression matrix containing selected cells(rows) and all genes(columns) following FB5P-seq quality control, raw data used during clustering analysis</li>
+<li><code>figure2_input_metadata.csv</code> - <code>csv</code> corresponding metadata produced by FB5P-seq quality control</li>
+<li><code>figure2_output_seurat.rds</code> - <code>seurat</code> object with cluster labels</li>
+<li><code>figure2_output_metadata.RData</code> - <code>RData</code> metadata file with results from clustering analysis</li>
+<li><code>figure2_group_gene_markers.csv</code> - <code>csv</code> csv file with gene markers</li>
+<li><code>figure4_input_seurat.rds</code> - <code>seurat</code> object used for gene set score analysis</li>
+<li><code>figure4_output_seurat.rds</code> - <code>seurat</code> object with gene set score analysis</li>
+<li><code>figure4_output_metadata.RData</code> - <code>RData</code> metadata file with results of gene set score analysis</li>
+</ul></li>
+<li><code>references/</code> - References mentioned during the analysis and on the website
+<ul>
+<li><code>references.bib</code> - BibTex file of references</li>
+</ul></li>
+</ul>
+</div>
+<div id="running-the-analysis" class="section level1">
+<h1>Running the analysis</h1>
+<p>The analysis directory contains the following analysis files:</p>
+<ul>
+<li><code>02-fig2.html</code> - Reading of datasets produced using FB5P-seq, annotation of the dataset.</li>
+<li><code>03-fig4.html</code> - Reading of datasets produced using Flash-FB5P-seq (v2), selection of high-quality cells, then scoring of the dataset.</li>
+<li><code>04-suppfig2.html</code> - highlight some marker genes in cell cluster.</li>
+<li><code>06-suppfig4.html</code> - Literature-based-gene set score analysis (FB5P-seq).</li>
+<li><code>07-suppfig14.html</code> - Literature-based-gene set score analysis (Flash).</li>
+</ul>
+<p>As indicated by the numbering they should be run in this order. If you want to rerun the entire analysis this can be easily done using <code>workflowr</code>.</p>
+<pre class="r"><code># rmarkdown::render_site(&#39;analysis/&#39;)
+#workflowr::wflow_build(republish = TRUE)</code></pre>
+<p>It is also possible to run individual stages of the analysis, either by providing the names of the file you want to run to <code>workflowr::wflow_build()</code> or by manually knitting the document (for example using the ‘Knit’ button in RStudio).</p>
+<div id="caching" class="section level2">
+<h2>Caching</h2>
+<p>To avoid having to repeatably re-run long running sections of the analysis I have turned on caching in the analysis documents. However, this comes at a tradeoff with disk space, useability and (potentially but unlikely if careful) reproducibility. In most cases this should not be a problem but it is something to be aware of. In particular there is a incompatibilty with caching and <code>workflowr</code> that can cause images to not appear in the resulting HTML files (see this <a href="https://github.com/jdblischak/workflowr/issues/113" title="Workflowr caching issue">GitHub issue</a> for more details). If you have already run part of the analysis (and therefore have a cache) and want to rerun a document the safest option is the use the RStudio ‘Knit’ button.</p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.1.2 (2021-11-01)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 20.04.3 LTS
+
+Matrix products: default
+BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.8       rstudioapi_0.13  knitr_1.37       magrittr_2.0.2  
+ [5] workflowr_1.7.1  R6_2.5.1         rlang_1.1.1      fastmap_1.1.0   
+ [9] fansi_1.0.2      stringr_1.4.0    tools_4.1.2      xfun_0.30       
+[13] utf8_1.2.2       cli_3.6.1        git2r_0.33.0     jquerylib_0.1.4 
+[17] htmltools_0.5.2  ellipsis_0.3.2   rprojroot_2.0.2  yaml_2.3.5      
+[21] digest_0.6.29    tibble_3.1.8     lifecycle_1.0.3  crayon_1.5.0    
+[25] later_1.3.0      sass_0.4.0       vctrs_0.6.4      promises_1.2.0.1
+[29] fs_1.5.2         glue_1.6.2       evaluate_0.15    rmarkdown_2.11  
+[33] stringi_1.7.6    bslib_0.3.1      compiler_4.1.2   pillar_1.7.0    
+[37] jsonlite_1.8.0   httpuv_1.6.5     pkgconfig_2.0.3 </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

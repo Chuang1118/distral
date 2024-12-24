@@ -1,0 +1,140 @@
+---
+title: "Getting started"
+output:
+  workflowr::wflow_html:
+    toc: false
+    code_folding: "none"
+---
+
+This page describes how to download the data and code used in this analysis,
+set up the project directory and rerun the analysis. I have used the
+[`workflowr`][workflowr] package to organize the analysis and insert
+reproducibility information into the output documents. The [`packrat`][packrat]
+package has also been used to manage R package versions and dependencies.
+
+Getting the code
+================
+
+All the code and outputs of analyses are available from GitHub at 
+https://github.com/MilpiedLab/Autoreactive-CD4-T-cells-in-liver-disease. If you want to replicate the 
+analysis you can either fork the repository and clone it or download the 
+repository as a zipped directory.
+
+Once you have a local copy of the repository you should see the following
+directory structure:
+
+* `analysis/` - Contains the R Markdown documents with the various stages of
+  analysis. These are numbered according to the order they should be run.
+* `data/` - This directory contains the data files used in the analysis with
+  each dataset in its own sub-directory (see [Getting the data](#data) for
+  details). Processed intermediate data files will also be placed here.
+* `output/` - Directory for output files produced by the analyses, each analysis
+  step has its own sub-directory.
+* `docs/` - This directory contains the analysis website, including image files.
+* `R/` - R scripts with custom functions used in some analysis stages.
+* `scripts/` - Python scripts and examples of how command line tools were run.
+* `packrat/` - Directory created by `packrat` that contains details of the R
+  packages and versions used in the analyses.
+* `README.md` - README describing the project.
+* `.Rprofile` - Custom R profile for the project including set up for
+  `packrat` and `workflowr`.
+* `.gitignore` - Details of files and directories that are excluded from the
+  repository.
+* `proj_distal.Rproj` - RStudio project file.
+
+Installing R packages
+=====================
+
+R Packages and dependencies for this project are managed using
+[`packrat`][packrat]. This should allow you to install and use the same package
+versions as we have used for the analysis. `packrat` should automatically take
+care of this process for you the first time that you open R in the project
+directory. If for some reason this does not happen you may need to run the
+following commands:
+
+```r
+#install.packages("packrat")
+#packrat::restore()
+```
+
+Note that a clean install of all the required packages can take a significant
+amount of time when the project is first opened.
+
+Getting the data {#data}
+================
+The raw sequencing data from this project is available on NCBI GEO under accession numbers [GSE270739][geo], [GSE269661][geo2] and [GSE269525][geo3].
+Some pre-processing and quality control of the datasets was done to produce datasets in a form suitable for the analyses that are presented here. If you don't want to perform the preprocessing and quality control steps 
+yourself, the processed datasets are available from this [Zenodo repository][zenodo]. This repository also contains intermediate
+files from the statistical analysis.
+
+Once the processed data has been has been produced or downloaded it needs to be
+placed in the correct location. The analysis code assumes the following
+directory structure inside the `data/` directory:
+
+* `processed/` - Input processed data required to run the analyses, and output datasets after analysis. Files are named and numbered according to the figure in which the results are described.
+    * `figure2_input_UMI.csv` - `csv` the expression matrix containing 
+      selected cells(rows) and all genes(columns) following FB5P-seq quality 
+      control, raw data used during clustering analysis
+    * `figure2_input_metadata.csv` - `csv` corresponding metadata 
+      produced by FB5P-seq quality control
+    * ` figure2_output_seurat.rds` - `seurat` object with cluster labels
+    * ` figure2_output_metadata.RData` - `RData` metadata file with results 
+      from clustering analysis
+    * ` figure2_group_gene_markers.csv` - `csv` csv file with gene markers 
+    * `figure4_input_seurat.rds` - `seurat` object used for gene set score
+      analysis
+    * ` figure4_output_seurat.rds` - `seurat` object with gene set score analysis
+    * ` figure4_output_metadata.RData` - `RData` metadata file with results of gene set score analysis
+* `references/` - References mentioned during the analysis and on the website
+    * `references.bib` - BibTex file of references
+
+Running the analysis
+====================
+
+The analysis directory contains the following analysis files:
+
+* `02-fig2.html` - Reading of datasets produced using FB5P-seq, 
+  annotation of the dataset.
+* `03-fig4.html` - Reading of datasets produced using Flash-FB5P-seq (v2), 
+  selection of high-quality cells, then scoring of the dataset.
+* `04-suppfig2.html` - highlight some marker genes in cell cluster.
+* `06-suppfig4.html` - Literature-based-gene set score analysis (FB5P-seq).
+* `07-suppfig14.html` - Literature-based-gene set score analysis (Flash).
+
+As indicated by the numbering they should be run in this order. If you want to
+rerun the entire analysis this can be easily done using `workflowr`.
+
+```r
+# rmarkdown::render_site('analysis/')
+#workflowr::wflow_build(republish = TRUE)
+```
+
+It is also possible to run individual stages of the analysis, either by
+providing the names of the file you want to run to `workflowr::wflow_build()` or
+by manually knitting the document (for example using the 'Knit' button in
+RStudio).
+
+Caching
+-------
+
+To avoid having to repeatably re-run long running sections of the analysis I
+have turned on caching in the analysis documents. However, this comes at a
+tradeoff with disk space, useability and (potentially but unlikely if careful)
+reproducibility. In most cases this should not be a problem but it is something
+to be aware of. In particular there is a incompatibilty with caching and
+`workflowr` that can cause images to not appear in the resulting HTML files (see
+this [GitHub issue][workflowr-issue] for more details). If you have already run
+part of the analysis (and therefore have a cache) and want to rerun a document
+the safest option is the use the RStudio 'Knit' button.
+
+[geo]: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE270739 "GEO"
+[geo2]: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE269661 "GEO"
+[geo3]: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE269525 "GEO"
+[zenodo]: https://zenodo.org/records/14516943 "Zenodo"
+[packrat]: https://rstudio.github.io/packrat/ "Packrat"
+[workflowr]: https://jdblischak.github.io/workflowr/ "Workflowr"
+[workflowr-issue]: https://github.com/jdblischak/workflowr/issues/113 "Workflowr caching issue"
+
+```{r session-info, eval = FALSE, echo = FALSE}
+devtools::session_info()
+```

@@ -1,0 +1,22 @@
+[
+  {
+    "Parameter": ["sel_genes"],
+    "Value": [3912],
+    "Description": ["Number of selected genes filtered TCR genes based on 4000"]
+  },
+  {
+    "Parameter": ["n_pcs"],
+    "Value": [40],
+    "Description": ["Selected number of principal components for clustering"]
+  },
+  {
+    "Parameter": ["res"],
+    "Value": [0.8],
+    "Description": ["Selected resolution parameter for clustering"]
+  },
+  {
+    "Parameter": ["n_clusts"],
+    "Value": [8],
+    "Description": ["Number of clusters produced by selected resolution"]
+  }
+]

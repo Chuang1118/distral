@@ -1,0 +1,664 @@
+---
+title: "Figure 2"
+---
+
+```{r knitr, include = FALSE}
+DOCNAME = "Figure-2"
+NOW <- Sys.time()
+
+# Time chunks during knitting
+knitr::knit_hooks$set(timeit = function(before) {
+    if (before) {
+        print(paste("Start:", Sys.time()))
+        NOW <<- Sys.time()
+    } else {
+        print(paste("Stop:", Sys.time()))
+        print(Sys.time() - NOW)
+    }
+})
+
+knitr::opts_chunk$set(
+    autodep        = TRUE,
+    cache          = TRUE,
+    cache.path     = paste0("cache/", DOCNAME, "/"),
+    cache.comments = FALSE,
+    echo           = TRUE,
+    error          = FALSE,
+    fig.align      = "center",
+    fig.width      = 10,
+    fig.height     = 8,
+    message        = FALSE,
+    warning        = FALSE,
+    timeit         = TRUE
+)
+```
+
+```{r libaries, cache = FALSE}
+# scRNA-seq
+library(Seurat)
+#packageVersion("Seurat")
+
+# Plotting
+library("ggplot2")
+library("ggpubr")
+library("cowplot")
+library("pheatmap")
+
+# Presentation
+library("knitr")
+
+# Others
+library("DT")
+```
+
+```{r source, cache = FALSE}
+source(here::here("R/00_generalDeps.R"))
+source(here::here("R/output.R"))
+```
+
+```{r depends-paths}
+filt_path <- here::here("data/processed/")
+
+```
+
+Introduction
+============
+
+In this document we are going to perform clustering and plotting figure 2 on the high-quality filtered dataset using `Seurat`.
+
+Loading umi count and metadata after quality control. 
+```{r load, cache.extra = tools::md5sum(filt_path)}
+if (file.exists(filt_path)) {
+    UMI_df = read.csv(paste0(filt_path,"figure2_input_UMI.csv"), stringsAsFactors = FALSE, header = TRUE, sep=",",check.names=FALSE)
+    metadata_df = read.csv(paste0(filt_path,"figure2_input_metadata.csv"), stringsAsFactors = FALSE, header = TRUE, sep=",",check.names=FALSE)
+  } else {
+    stop("Figure 2 dataset is missing. ",
+         "Please check Input first.",
+         call. = FALSE)
+}
+```
+
+Merge version   
+==============
+
+Data Preprocessing
+------
+
+Merging Ag reactivity (H1N1 to FLU, PDCE2 TOT to PDCE2)
+
+```{r ag-reactivity}
+
+
+# adapt nomenclature
+metadata_df$Ag_reactivity_v0 = metadata_df$Ag_reactivity
+metadata_df$Ag_reactivity = gsub("FLU", "H1N1", metadata_df$Ag_reactivity)
+metadata_df$Ag_reactivity = gsub("PDCE2 TOT", "PDCE2", metadata_df$Ag_reactivity)
+metadata_df$Ag_reactivity = sapply(metadata_df$Ag_reactivity, function(x) if(x == "C.ALB"){"MP65 (C.ALB)"}
+                                   else if(x == "CYP2D6"){"CYP2D6 (LKM1)"}
+                                   else if(x == "H1N1"){"MP1 (H1N1)"}
+                                   else if(x == "PDCE2"){"PDCE2 (M2)"}
+                                   else if(x == "SLA"){"Sepsecs (SLA)"}
+                                   else if(x == "SPIKE"){"SPIKE (SARS-CoV-2)"})
+
+df<-metadata_df
+df<-df %>% 
+  group_by(Patient_ID) %>% 
+  dplyr::count(Ag_reactivity)%>% 
+  dplyr::mutate(ratio = round(n/sum(n), digit=4))
+
+datatable(df, rownames = T, extensions = 'Buttons',caption="Summary of all dataset cells after motify Ag_reactivity",
+          options = list(dom = 'Blfrtip',
+                         buttons = c('excel', "csv"),
+                         pageLength = 15))
+
+
+```
+
+Seurat - Clustering
+==============
+
+Setup the Seurat Object
+------
+
+```{r setup-seurat}
+sc_seurat <-CreateSeuratObject(counts = t(UMI_df), min.cells = 1, min.features = 1, project = "huDistal")
+#reorder
+metadata_df <- metadata_df[colnames(sc_seurat),!colnames(metadata_df) %in% c("nCount_RNA","nFeature_RNA")]
+# Add the metadata 
+for(colname in colnames(metadata_df)){
+  sc_seurat@meta.data[,colname]=metadata_df[,colname]
+}
+```
+
+Normalizing the data
+------
+
+```{r normalizing}
+sc_seurat <- NormalizeData(sc_seurat, normalization.method = "LogNormalize", scale.factor = 10000)
+```
+
+feature selection
+-----------------------
+Based on 4000 highly variable features then filter out TCR gene sets
+
+```{r hvf}
+
+sc_seurat <- FindVariableFeatures(sc_seurat, selection.method = "vst", nfeatures = 4000)
+variable_genes_v = VariableFeatures(sc_seurat)
+noTCR_genes_v = variable_genes_v[!grepl("^TR[A,B,D,G][C,V,J]",variable_genes_v)]
+VariableFeatures(sc_seurat)=noTCR_genes_v
+```
+
+Scaling the data
+-----------------------
+Whether to scale the data, False, we've center the data, but we don't scale the expression of each gene.
+
+```{r scale}
+sc_seurat <- ScaleData(sc_seurat, do.scale  = FALSE, verbose = F)
+```
+
+The standard workflow for clustering
+-----------------------
+Dimensional reduction & Cluster the cells & UMAP
+
+```{r clustering}
+sc_seurat <- RunPCA(sc_seurat, verbose = FALSE)
+n_pcs = 40
+sc_seurat <- RunUMAP(sc_seurat, reduction = "pca", dims = 1:n_pcs, verbose = FALSE)
+sc_seurat <- FindNeighbors(sc_seurat, reduction = "pca", dims = 1:n_pcs, verbose = FALSE)
+
+sc_seurat$Ag_reactivity = factor(sc_seurat$Ag_reactivity, levels = c("MP65 (C.ALB)", "CYP2D6 (LKM1)", "MP1 (H1N1)", "PDCE2 (M2)", "Sepsecs (SLA)", "SPIKE (SARS-CoV-2)"))
+
+resolution = 0.8
+sc_seurat <- FindClusters(sc_seurat, resolution = resolution, verbose = FALSE)
+DimPlot(sc_seurat, group.by = "RNA_snn_res.0.8", label = TRUE) + ggtitle("RNA_snn_res.0.8")
+
+```
+
+Clusters summary
+--------------
+```{r clusters-summary}
+n_clusts = length(unique(sc_seurat$RNA_snn_res.0.8))
+  
+clusterCount = as.data.frame( table( ClusterNumber = sc_seurat[[ "RNA_snn_res.0.8" ]]), responseName = "CellCount");
+# Create datatable
+datatable( clusterCount, 
+           class = "compact",
+           rownames = FALSE,
+           colnames = c("Cluster", "Nb. Cells"),
+           options = list(dom = "<'row'rt>", # Set elements for CSS formatting ('<Blf><rt><ip>')
+                          autoWidth = FALSE,
+                          columnDefs = list( # Center all columns
+                            list( targets = 0:(ncol(clusterCount)-1),
+                                  className = 'dt-center')),
+                          orderClasses = FALSE, # Disable flag for CSS to highlight columns used for ordering (for performance)
+                          paging = FALSE, # Disable pagination (show all)
+                          processing = TRUE, 
+                          scrollCollapse = TRUE,
+                          scroller = TRUE,  # Only load visible data
+                          scrollX = TRUE,
+                          scrollY = "525px",
+                          stateSave = TRUE));
+```
+
+Finding differentially expressed features
+--------------
+Seurat can help you find markers that define clusters via differential expression (DE)
+
+```{r dea}
+Idents(object = sc_seurat) <- "RNA_snn_res.0.8"
+
+#parameter
+# Parameters for identification of marker annotations for clusters (see Seurat::FindAllMarkers())
+FINDMARKERS_METHOD    = "wilcox"  # Method used to identify markers
+FINDMARKERS_ONLYPOS   = TRUE;     # Only consider overexpressed annotations for markers ? (if FALSE downregulated genes can also be markers)
+FINDMARKERS_MINPCT    = 0.1;      # Only test genes that are detected in a minimum fraction of cells in either of the two populations. Speed up the function by not testing genes that are very infrequently expressed. Default is '0.1'.
+FINDMARKERS_LOGFC_THR = 0.25;     # Limit testing to genes which show, on average, at least X-fold difference (log-scale) between the two groups of cells. Default is '0.25'. Increasing logfc.threshold speeds up the function, but can miss weaker signals.
+FINDMARKERS_PVAL_THR  = 0.01;    # PValue threshold for identification of significative markers
+FINDMARKERS_SHOWTOP   = NULL;       # Number of marker genes to show in report and tables (NULL for all)
+# Identify marker genes
+markers = FindAllMarkers( object          = sc_seurat,
+                          test.use        = FINDMARKERS_METHOD,
+                          only.pos        = FINDMARKERS_ONLYPOS,
+                          min.pct         = FINDMARKERS_MINPCT,
+                          logfc.threshold = FINDMARKERS_LOGFC_THR)
+
+#markers = markers[markers$p_val_adj <= FINDMARKERS_PVAL_THR,]
+markers$diff.pct = markers$pct.1 - markers$pct.2
+
+# Filter markers by cluster (TODO: check if downstream code works when no markers found)
+topMarkers = by( markers, markers[["cluster"]], function(x)
+{
+  # Filter markers based on adjusted PValue
+  x = x[ x[["p_val_adj"]] < FINDMARKERS_PVAL_THR, , drop = FALSE];
+  # Sort by decreasing logFC
+  x = x[ order(abs(x[["diff.pct"]]), decreasing = TRUE), , drop = FALSE ]
+  # Return top ones
+  return( if(is.null( FINDMARKERS_SHOWTOP)) x else head( x, n = FINDMARKERS_SHOWTOP));
+});
+
+# Merge marker genes in a single data.frame and render it as datatable
+topMarkersDF = do.call( rbind, topMarkers);
+# Select and order columns to be shown in datatable
+topMarkersDT = topMarkersDF[c("gene", "cluster", "avg_log2FC" , "pct.1", "pct.2","diff.pct", "p_val_adj")]
+
+# Create datatable
+datatable( topMarkersDT, 
+           class = "compact",
+           filter="top",
+           rownames = FALSE,
+           colnames = c("gene", "cluster", "avg_log2FC" , "pct.1", "pct.2","diff.pct", "p_val_adj"),
+           caption = paste(ifelse( is.null( FINDMARKERS_SHOWTOP), "All", paste("Top", FINDMARKERS_SHOWTOP)), "marker genes for each cluster"),
+           extensions = c('Buttons', 'Select'),
+           options = list(dom = "<'row'<'col-sm-8'B><'col-sm-4'f>> <'row'<'col-sm-12'l>> <'row'<'col-sm-12'rt>> <'row'<'col-sm-12'ip>>", # Set elements for CSS formatting ('<Blf><rt><ip>')
+                          autoWidth = FALSE,
+                          buttons = exportButtonsListDT,
+                          columnDefs = list( 
+                            list( # Center all columns except first one
+                              targets = 1:(ncol( topMarkersDT)-1),
+                              className = 'dt-center'),
+                            list( # Set renderer function for 'float' type columns (LogFC)
+                              targets = ncol( topMarkersDT)-2,
+                              render = htmlwidgets::JS("function ( data, type, row ) {return type === 'export' ? data : data.toFixed(4);}")),
+                            list( # Set renderer function for 'scientific' type columns (PValue)
+                              targets = ncol( topMarkersDT)-1,
+                              render = htmlwidgets::JS( "function ( data, type, row ) {return type === 'export' ? data : data.toExponential(4);}"))), 
+                          #fixedColumns = TRUE, # Does not work well with filter on this column
+                          #fixedHeader = TRUE, # Does not work well with 'scrollX'
+                          lengthMenu = list(c( 10, 50, 100, -1),
+                                            c( 10, 50, 100, "All")),
+                          orderClasses = FALSE, # Disable flag for CSS to highlight columns used for ordering (for performance)
+                          processing = TRUE, 
+                          #search.regex= TRUE, # Does not work well with 'search.smart'
+                          search.smart = TRUE,
+                          select = TRUE, # Enable ability to select rows
+                          scrollCollapse = TRUE,
+                          scroller = TRUE,  # Only load visible data
+                          scrollX = TRUE,
+                          scrollY = "525px",
+                          stateSave = TRUE))
+```
+
+
+selected clusters
+--------------
+selected antigen reactivity cluster groups of memory CD4 T cells
+```{r selected}
+sc_seurat$Group = sapply(as.numeric(as.character(sc_seurat$RNA_snn_res.0.8)), function(x) if(x == 0 ){"H1N1"}
+                          else if(x %in% c(2,3)) {"Auto-reactivity"}
+                          else if(x == 5) {"C.ALB"}
+                          else if(x == 6){"SARS-CoV-2"}
+                          else{x})
+
+clusterCount = as.data.frame( table( ClusterNumber = sc_seurat[[ "Group" ]]), responseName = "CellCount");
+# Create datatable
+datatable( clusterCount, 
+           class = "compact",
+           rownames = FALSE,
+           colnames = c("Cluster", "Nb. Cells"),
+           options = list(dom = "<'row'rt>", # Set elements for CSS formatting ('<Blf><rt><ip>')
+                          autoWidth = FALSE,
+                          columnDefs = list( # Center all columns
+                            list( targets = 0:(ncol(clusterCount)-1),
+                                  className = 'dt-center')),
+                          orderClasses = FALSE, # Disable flag for CSS to highlight columns used for ordering (for performance)
+                          paging = FALSE, # Disable pagination (show all)
+                          processing = TRUE, 
+                          scrollCollapse = TRUE,
+                          scroller = TRUE,  # Only load visible data
+                          scrollX = TRUE,
+                          scrollY = "525px",
+                          stateSave = TRUE));
+
+metadata_df$Group = sc_seurat$Group
+
+subset = subset(sc_seurat, idents = c(1, 4, 7), invert = TRUE)
+
+DimPlot(subset, reduction = "umap", group.by = "Group", cols = c("C.ALB" = "#F8766D", "H1N1" = "#7CAE00" ,"Auto-reactivity"= "#00BFC4", "SARS-CoV-2"= "#C77CFF")) + ggtitle(paste0("Group: ", length(subset$Group)))
+
+n_clusts_sub = length(unique(subset$Group))
+
+clusterCount = as.data.frame( table( ClusterNumber = subset[[ "Group" ]]), responseName = "CellCount");
+# Create datatable
+datatable( clusterCount, 
+           class = "compact",
+           rownames = FALSE,
+           colnames = c("Group", "Nb. Cells"),
+           options = list(dom = "<'row'rt>", # Set elements for CSS formatting ('<Blf><rt><ip>')
+                          autoWidth = FALSE,
+                          columnDefs = list( # Center all columns
+                            list( targets = 0:(ncol(clusterCount)-1),
+                                  className = 'dt-center')),
+                          orderClasses = FALSE, # Disable flag for CSS to highlight columns used for ordering (for performance)
+                          paging = FALSE, # Disable pagination (show all)
+                          processing = TRUE, 
+                          scrollCollapse = TRUE,
+                          scroller = TRUE,  # Only load visible data
+                          scrollX = TRUE,
+                          scrollY = "525px",
+                          stateSave = TRUE));
+```
+Finding differentially expressed features on cluster groups of memory CD4 T cells
+--------------
+
+```{r dea2}
+Idents(subset) <- "Group"
+# Identify marker genes
+markers = FindAllMarkers( object          = subset,
+                          test.use        = FINDMARKERS_METHOD,
+                          only.pos        = FINDMARKERS_ONLYPOS,
+                          min.pct         = FINDMARKERS_MINPCT,
+                          logfc.threshold = FINDMARKERS_LOGFC_THR)
+
+#markers = markers[markers$p_val_adj <= FINDMARKERS_PVAL_THR,]
+markers$diff.pct = markers$pct.1 - markers$pct.2
+
+# Filter markers by cluster (TODO: check if downstream code works when no markers found)
+topMarkers = by( markers, markers[["cluster"]], function(x)
+{
+  # Filter markers based on adjusted PValue
+  x = x[ x[["p_val_adj"]] < FINDMARKERS_PVAL_THR, , drop = FALSE];
+  # Sort by decreasing logFC
+  x = x[ order(abs(x[["diff.pct"]]), decreasing = TRUE), , drop = FALSE ]
+  # Return top ones
+  return( if(is.null( FINDMARKERS_SHOWTOP)) x else head( x, n = FINDMARKERS_SHOWTOP));
+});
+
+# Merge marker genes in a single data.frame and render it as datatable
+topMarkersDF = do.call( rbind, topMarkers);
+# Select and order columns to be shown in datatable
+topMarkersDT = topMarkersDF[c("gene", "cluster", "avg_log2FC" , "pct.1", "pct.2","diff.pct", "p_val_adj")]
+
+# Create datatable
+datatable( topMarkersDT, 
+           class = "compact",
+           filter="top",
+           rownames = FALSE,
+           colnames = c("gene", "cluster", "avg_log2FC" , "pct.1", "pct.2","diff.pct", "p_val_adj"),
+           caption = paste(ifelse( is.null( FINDMARKERS_SHOWTOP), "All", paste("Top", FINDMARKERS_SHOWTOP)), "marker genes for each cluster"),
+           extensions = c('Buttons', 'Select'),
+           options = list(dom = "<'row'<'col-sm-8'B><'col-sm-4'f>> <'row'<'col-sm-12'l>> <'row'<'col-sm-12'rt>> <'row'<'col-sm-12'ip>>", # Set elements for CSS formatting ('<Blf><rt><ip>')
+                          autoWidth = FALSE,
+                          buttons = exportButtonsListDT,
+                          columnDefs = list( 
+                            list( # Center all columns except first one
+                              targets = 1:(ncol( topMarkersDT)-1),
+                              className = 'dt-center'),
+                            list( # Set renderer function for 'float' type columns (LogFC)
+                              targets = ncol( topMarkersDT)-2,
+                              render = htmlwidgets::JS("function ( data, type, row ) {return type === 'export' ? data : data.toFixed(4);}")),
+                            list( # Set renderer function for 'scientific' type columns (PValue)
+                              targets = ncol( topMarkersDT)-1,
+                              render = htmlwidgets::JS( "function ( data, type, row ) {return type === 'export' ? data : data.toExponential(4);}"))), 
+                          #fixedColumns = TRUE, # Does not work well with filter on this column
+                          #fixedHeader = TRUE, # Does not work well with 'scrollX'
+                          lengthMenu = list(c( 10, 50, 100, -1),
+                                            c( 10, 50, 100, "All")),
+                          orderClasses = FALSE, # Disable flag for CSS to highlight columns used for ordering (for performance)
+                          processing = TRUE, 
+                          #search.regex= TRUE, # Does not work well with 'search.smart'
+                          search.smart = TRUE,
+                          select = TRUE, # Enable ability to select rows
+                          scrollCollapse = TRUE,
+                          scroller = TRUE,  # Only load visible data
+                          scrollX = TRUE,
+                          scrollY = "525px",
+                          stateSave = TRUE))
+
+```
+
+Heatmap
+------
+
+```{r heatmap}
+
+norm_df = as.data.frame(t(as.matrix(GetAssayData(subset, slot = "data"))))
+heatmap_metadata_df = metadata_df[colnames(subset),]
+heatmap_metadata_df$Group =  factor(heatmap_metadata_df$Group, levels= c("C.ALB", "H1N1", "Auto-reactivity", "SARS-CoV-2"))
+heatmap_metadata_df<- arrange(heatmap_metadata_df , Group, Patient_ID)
+
+top10 <- topMarkersDT %>% group_by(cluster) %>% top_n(n = 10, wt = diff.pct)
+top10$cluster = factor(top10$cluster, levels= c("C.ALB", "H1N1", "Auto-reactivity", "SARS-CoV-2"))
+top10<- arrange(top10,cluster)
+genes = top10$gene
+
+df= norm_df[heatmap_metadata_df$UniqueCellID,genes]
+df <- t(df)
+
+TWO_COLORS_VECTOR=c("#FBE9E7", "#FF3D00")
+TWO_COLORS_GRADIANT=c("grey80",colorRampPalette(TWO_COLORS_VECTOR)(n = 2000))
+
+col=c("grey30",TWO_COLORS_GRADIANT[-1])
+
+df= norm_df[heatmap_metadata_df$UniqueCellID,genes]
+df <- t(df)
+
+gap.cells =  c(281,  281 +489, 281 +489+710)
+gap.genes = c(10,20,30)
+
+annot_colors=list(Ag_reactivity=c("MP65 (C.ALB)"="#F8766D","CYP2D6 (LKM1)"="#B79F00","MP1 (H1N1)"="#00BA38", 
+                                  "PDCE2 (M2)" ="#00BFC4","Sepsecs (SLA)" = "#619CFF", "SPIKE (SARS-CoV-2)" = "#F564E3"),
+                  Patient_ID = c("01-004-08" = "#F8766D",
+                                 "01-018-22" = "#E7851E",              
+                                 "01-028-06" = "#D09400",
+                                 "01-140-05" ="#B2A100",
+                                 "01-165-03" = "#89AC00",
+                                 "01-176-02" = "#45B500",
+                                 "01-176-03" ="#00BC51",
+                                 "01-188-02" ="#00C087",
+                                 "01-192-02" ="#00C0B2",
+                                 "01-213-02" ="#00BCD6",
+                                 "01-214-02" ="#00B3F2",
+                                 "01-232-01" ="#29A3FF",
+                                 "01-247-01" ="#9C8DFF",
+                                 "05-001-01" ="#D277FF",
+                                 "08-003-01" ="#F166E8",
+                                 "UKELKM_4"  ="#FF61C7",
+                                 "UKELKM_6" ="#FF689E"),
+                  Group=c(C.ALB="#F8766D",H1N1="#7CAE00", 
+                                  "Auto-reactivity" = "#00BFC4", "SARS-CoV-2" = "#C77CFF"))
+
+
+Annotationcol <-heatmap_metadata_df[,c('Group','Patient_ID','Ag_reactivity')] # dataframe contain
+Annotationcol$Group = factor(Annotationcol$Group, levels= c("C.ALB", "H1N1", "Auto-reactivity", "SARS-CoV-2"))
+
+set.seed(123)
+pheatmap(df,
+         color = col,
+         cluster_rows = FALSE,
+         cluster_cols = FALSE,
+         show_colnames = FALSE,
+         show_rownames = TRUE, 
+         gaps_col = gap.cells, 
+         gaps_row = gap.genes,
+         fontsize_row = 8 ,
+         annotation_col = Annotationcol, 
+         annotation_colors = annot_colors,
+         main = "Heatmap order by diff.pct v2")
+```
+
+
+Dotplot
+------
+
+```{r dotplot}
+subset$Group = factor(subset$Group, levels= c("C.ALB", "H1N1", "Auto-reactivity", "SARS-CoV-2"))
+Idents(subset) <- "Group"
+
+markers = c(
+  "CCL20", "IL23A", "IL17A", "IL22",
+  "CCL4", "CCL5", "GZMB", "FASLG",
+  "CXCL13", "TOX", "CTLA4", "TIGIT",
+  "IL4", "IL13", "CCR4", "TNFRSF4")
+
+DotPlot(subset, features = markers) +
+  geom_point(aes(size=pct.exp), shape = 21, colour="black", stroke=0.5) +
+  scale_colour_gradient2(low = "grey30",  high = "#FD6839") + # color scale
+  guides(size=guide_legend(override.aes=list(shape=21, colour="black", fill="white"))) + 
+  theme(axis.text.x = element_text(angle = 45, hjust=1))  + coord_flip()
+```
+
+
+Figure 2
+=======
+
+Panel A
+--------------
+
+```{r fig2-pA}
+
+fig <- DimPlot(sc_seurat, reduction = "umap", group.by = "RNA_snn_res.0.8", label = T) + ggtitle(paste0("RNA_snn_res.0.8: ", length(sc_seurat$RNA_snn_res.0.8)))
+
+ggsave(here::here("output", DOCNAME, "figure2-panelA.pdf"), fig,
+        width = 8, height = 8, scale = 1.2)
+ggsave(here::here("output", DOCNAME, "figure2-panelA.png"), fig,
+        width = 8, height = 8, scale = 1.2)
+
+fig
+```
+
+Panel B
+--------------
+
+```{r fig2-pB}
+
+fig <- DimPlot(sc_seurat, reduction = "umap", group.by = "Ag_reactivity") + ggtitle(paste0("Ag_reactivity: ", length(sc_seurat$Ag_reactivity)))
+
+ggsave(here::here("output", DOCNAME, "figure2-panelB.pdf"), fig,
+        width = 8, height = 8, scale = 1.2)
+ggsave(here::here("output", DOCNAME, "figure2-panelB.png"), fig,
+        width = 8, height = 8, scale = 1.2)
+
+fig
+```
+
+Panel C
+--------------
+
+```{r fig2-pC}
+
+fig <- DimPlot(sc_seurat, reduction = "umap", group.by = "Patient_ID") + ggtitle(paste0("Patient_ID: ", length(sc_seurat$Patient_ID)))
+
+ggsave(here::here("output", DOCNAME, "figure2-panelC.pdf"), fig,
+        width = 8, height = 8, scale = 1.2)
+ggsave(here::here("output", DOCNAME, "figure2-panelC.png"), fig,
+        width = 8, height = 8, scale = 1.2)
+
+fig
+```
+
+Panel F
+--------------
+
+```{r fig2-pF}
+
+fig <- DimPlot(subset, reduction = "umap", group.by = "Group") + ggtitle(paste0("Group: ", length(subset$Group)))
+
+ggsave(here::here("output", DOCNAME, "figure2-panelF.pdf"), fig,
+        width = 8, height = 8, scale = 1.2)
+ggsave(here::here("output", DOCNAME, "figure2-panelF.png"), fig,
+        width = 8, height = 8, scale = 1.2)
+
+fig
+```
+
+Panel G
+--------------
+
+```{r fig2-pG}
+
+fig <- pheatmap(df,
+         color = col,
+         cluster_rows = FALSE,
+         cluster_cols = FALSE,
+         show_colnames = FALSE,
+         show_rownames = TRUE, 
+         gaps_col = gap.cells, 
+         gaps_row = gap.genes,
+         fontsize_row = 8 ,
+         annotation_col = Annotationcol, 
+         annotation_colors = annot_colors,
+         main = "Heatmap")
+
+ggsave(here::here("output", DOCNAME, "figure2-panelG.pdf"), fig,
+        width = 8, height = 8, scale = 1.2)
+ggsave(here::here("output", DOCNAME, "figure2-panelG.png"), fig,
+        width = 8, height = 8, scale = 1.2)
+
+```
+
+Panel H
+--------------
+
+```{r fig2-pH}
+
+fig <- DotPlot(subset, features = markers) +
+  geom_point(aes(size=pct.exp), shape = 21, colour="black", stroke=0.5) +
+  scale_colour_gradient2(low = "grey30",  high = "#FD6839") + # color scale
+  guides(size=guide_legend(override.aes=list(shape=21, colour="black", fill="white"))) + 
+  theme(axis.text.x = element_text(angle = 45, hjust=1))  + coord_flip()
+
+ggsave(here::here("output", DOCNAME, "figure2-panelH.pdf"), fig,
+        width = 8, height = 8, scale = 1.2)
+ggsave(here::here("output", DOCNAME, "figure2-panelH.png"), fig,
+        width = 8, height = 8, scale = 1.2)
+
+fig
+```
+
+Summary
+=======
+
+We performed graph based clustering using `Seurat` and identified `r n_clusts` 
+clusters, `r n_clusts_sub` cluster groups of memory CD4 T cells.
+
+Parameters
+----------
+
+This table describes parameters used and set in this document.
+
+```{r parameters}
+params <- list(
+    list(
+        Parameter = "sel_genes",
+        Value = length(VariableFeatures(sc_seurat)),
+        Description = "Number of selected genes filtered TCR genes based on 4000"
+    ),
+    list(
+        Parameter = "n_pcs",
+        Value = n_pcs,
+        Description = "Selected number of principal components for clustering"
+    ),
+    list(
+        Parameter = "res",
+        Value = resolution,
+        Description = "Selected resolution parameter for clustering"
+    ),
+    list(
+        Parameter = "n_clusts",
+        Value = n_clusts,
+        Description = "Number of clusters produced by selected resolution"
+    )
+)
+
+params <- jsonlite::toJSON(params, pretty = TRUE)
+knitr::kable(jsonlite::fromJSON(params))
+```
+
+
+Output files
+==============
+
+```{r save}
+saveRDS(sc_seurat, here::here("data/processed/figure2_output_seurat.rds"))
+saveRDS(subset, here::here("data/processed/figure2_output_seurat_subset.rds"))
+save(metadata_df, file = here::here("data/processed/figure2_output_metadata.RData"))
+```
+
+
+Session information
+==============
+
+```{r session-info, cache = FALSE}
+devtools::session_info()
+```

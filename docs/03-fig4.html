@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Figure 4</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.22/datatables.js"></script>
+<link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Autoreactive CD4 T cells in liver disease</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="getting-started.html">Getting started</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="02-fig2.html">Figure 2</a>
+    </li>
+    <li>
+      <a href="03-fig4.html">Figure 4</a>
+    </li>
+    <li>
+      <a href="04-suppfig2.html">Supplementary figure 2</a>
+    </li>
+    <li>
+      <a href="06-suppfig4.html">Supplementary figure 4</a>
+    </li>
+    <li>
+      <a href="07-suppfig14.html">Supplementary figure 14</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="license.html">License</a>
+</li>
+<li>
+  <a href="https://github.com/Chuang1118/distal">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Figure 4</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2024-12-24
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>proj_distal/analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version 1.7.1). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed12345code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(12345)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed12345code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(12345)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongnoversioncontrol"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>Repository version:</strong> no version control </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongnoversioncontrol" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Tracking code development and connecting the code version to the results is critical for reproducibility. To start using Git, open the Terminal and type <code>git init</code> in your project directory.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+This project is not being versioned with Git. To obtain the full reproducibility benefits of using workflowr, please see <code>?wflow_start</code>.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code># scRNA-seq
+library(Seurat)
+packageVersion(&quot;Seurat&quot;)</code></pre>
+<pre><code>[1] &#39;4.1.0&#39;</code></pre>
+<pre class="r"><code># Plotting
+library(&quot;ggplot2&quot;)
+library(&quot;ggpubr&quot;)
+library(&quot;cowplot&quot;)
+
+# Presentation
+library(&quot;knitr&quot;)
+
+# Others
+library(&quot;readxl&quot;)
+library(&quot;DT&quot;)
+library(&quot;dplyr&quot;)
+library(&#39;stringr&#39;)</code></pre>
+<pre class="r"><code>source(here::here(&quot;R/00_generalDeps.R&quot;))
+source(here::here(&quot;R/output.R&quot;))</code></pre>
+<pre class="r"><code>filt_path &lt;- here::here(&quot;data/processed/figure4_input_seurat.rds&quot;)</code></pre>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In this document we are going to perform plotting figure4 panelC&amp;D on the high-quality filtered dataset using <code>Seurat</code>.</p>
+<p>Loading <code>seurat</code> object processed</p>
+<pre class="r"><code>if (file.exists(filt_path)) {
+    patient.integrated &lt;- readRDS(filt_path)
+} else {
+    stop(&quot;Figure4 dataset is missing. &quot;,
+         &quot;Please check Input first.&quot;,
+         call. = FALSE)
+}</code></pre>
+</div>
+<div id="integration" class="section level1">
+<h1>Integration</h1>
+<p>Integrate data from the six samples, so that cells from the same cell type/subpopulation will cluster together.</p>
+<div id="visualization" class="section level2">
+<h2>visualization</h2>
+<p>plot metadata</p>
+<pre class="r"><code>#DimPlot(patient.integrated, reduction = &quot;umap&quot;, group.by = &quot;SortPheno&quot;) + ggtitle(paste0(&quot;SortPheno: &quot;, length(patient.integrated$SortPheno)))
+
+clusterCount = as.data.frame( table( ClusterNumber = patient.integrated[[ &quot;SortPheno&quot; ]]), responseName = &quot;CellCount&quot;);
+# Create datatable
+datatable( clusterCount, 
+           class = &quot;compact&quot;,
+           rownames = FALSE,
+           colnames = c(&quot;SortPheno&quot;, &quot;Nb. Cells&quot;),
+           options = list(dom = &quot;&lt;&#39;row&#39;rt&gt;&quot;, # Set elements for CSS formatting (&#39;&lt;Blf&gt;&lt;rt&gt;&lt;ip&gt;&#39;)
+                          autoWidth = FALSE,
+                          columnDefs = list( # Center all columns
+                            list( targets = 0:(ncol(clusterCount)-1),
+                                  className = &#39;dt-center&#39;)),
+                          orderClasses = FALSE, # Disable flag for CSS to highlight columns used for ordering (for performance)
+                          paging = FALSE, # Disable pagination (show all)
+                          processing = TRUE, 
+                          scrollCollapse = TRUE,
+                          scroller = TRUE,  # Only load visible data
+                          scrollX = TRUE,
+                          scrollY = &quot;525px&quot;,
+                          stateSave = TRUE));</code></pre>
+<div id="htmlwidget-8d32cfd9db97395c4a5f" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8d32cfd9db97395c4a5f">{"x":{"filter":"none","vertical":false,"data":[["TTneg","TTpos"],[411,92]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th>SortPheno<\/th>\n      <th>Nb. Cells<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"<'row'rt>","autoWidth":false,"columnDefs":[{"targets":[0,1],"className":"dt-center"}],"orderClasses":false,"paging":false,"processing":true,"scrollCollapse":true,"scroller":true,"scrollX":true,"scrollY":"525px","stateSave":true,"order":[]}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>#DimPlot(patient.integrated, reduction = &quot;umap&quot;, group.by = &quot;Sample&quot;)  + ggtitle(paste0(&quot;Sample: &quot;, length(patient.integrated$Sample)))
+
+clusterCount = as.data.frame( table( ClusterNumber = patient.integrated[[ &quot;Sample&quot; ]]), responseName = &quot;CellCount&quot;);
+# Create datatable
+datatable( clusterCount, 
+           class = &quot;compact&quot;,
+           rownames = FALSE,
+           colnames = c(&quot;Sample&quot;, &quot;Nb. Cells&quot;),
+           options = list(dom = &quot;&lt;&#39;row&#39;rt&gt;&quot;, # Set elements for CSS formatting (&#39;&lt;Blf&gt;&lt;rt&gt;&lt;ip&gt;&#39;)
+                          autoWidth = FALSE,
+                          columnDefs = list( # Center all columns
+                            list( targets = 0:(ncol(clusterCount)-1),
+                                  className = &#39;dt-center&#39;)),
+                          orderClasses = FALSE, # Disable flag for CSS to highlight columns used for ordering (for performance)
+                          paging = FALSE, # Disable pagination (show all)
+                          processing = TRUE, 
+                          scrollCollapse = TRUE,
+                          scroller = TRUE,  # Only load visible data
+                          scrollX = TRUE,
+                          scrollY = &quot;525px&quot;,
+                          stateSave = TRUE));</code></pre>
+<div id="htmlwidget-d701554a25665d09d09f" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d701554a25665d09d09f">{"x":{"filter":"none","vertical":false,"data":[["01-004","01-018","01-046","01-051","01-128","01-140"],[80,145,83,85,48,62]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th>Sample<\/th>\n      <th>Nb. Cells<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"<'row'rt>","autoWidth":false,"columnDefs":[{"targets":[0,1],"className":"dt-center"}],"orderClasses":false,"paging":false,"processing":true,"scrollCollapse":true,"scroller":true,"scrollX":true,"scrollY":"525px","stateSave":true,"order":[]}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="plate4-01-018-issue" class="section level2">
+<h2>Plate4 01-018 issue</h2>
+<p>Visual plate4 sample 01-018 then filter out</p>
+<pre class="r"><code>DefaultAssay(patient.integrated) &lt;- &#39;RNA&#39;
+metadata_df = patient.integrated@meta.data
+ids = metadata_df[metadata_df$Plate == &#39;p4&#39; &amp; metadata_df$Sample == &#39;01-018&#39;,]$UniqueCellID
+
+metadata_df$p4018 = &#39;no&#39;   
+metadata_df[ids, ]$p4018 = &#39;yes&#39;
+patient.integrated$p4018 = metadata_df$p4018 
+#DimPlot(patient.integrated, reduction = &quot;umap&quot;, group.by = &quot;p4018&quot;)  + ggtitle(&quot;Plate 4 018 issue&quot;) 
+
+Idents(patient.integrated) &lt;- &#39;p4018&#39;
+patient.integrated = subset(patient.integrated, idents = &#39;yes&#39;,invert = TRUE)</code></pre>
+</div>
+<div id="visualization-2" class="section level2">
+<h2>visualization 2</h2>
+<p>plot metadata after filter out</p>
+<pre class="r"><code>#DimPlot(patient.integrated, reduction = &quot;umap&quot;, group.by = &quot;SortPheno&quot;) + ggtitle(paste0(&quot;After filtering Plate 4 018 issue SortPheno: &quot;, length(patient.integrated$SortPheno)))
+clusterCount = as.data.frame( table( ClusterNumber = patient.integrated[[ &quot;SortPheno&quot; ]]), responseName = &quot;CellCount&quot;);
+# Create datatable
+datatable( clusterCount, 
+           class = &quot;compact&quot;,
+           rownames = FALSE,
+           colnames = c(&quot;SortPheno&quot;, &quot;Nb. Cells&quot;),
+           options = list(dom = &quot;&lt;&#39;row&#39;rt&gt;&quot;, # Set elements for CSS formatting (&#39;&lt;Blf&gt;&lt;rt&gt;&lt;ip&gt;&#39;)
+                          autoWidth = FALSE,
+                          columnDefs = list( # Center all columns
+                            list( targets = 0:(ncol(clusterCount)-1),
+                                  className = &#39;dt-center&#39;)),
+                          orderClasses = FALSE, # Disable flag for CSS to highlight columns used for ordering (for performance)
+                          paging = FALSE, # Disable pagination (show all)
+                          processing = TRUE, 
+                          scrollCollapse = TRUE,
+                          scroller = TRUE,  # Only load visible data
+                          scrollX = TRUE,
+                          scrollY = &quot;525px&quot;,
+                          stateSave = TRUE));</code></pre>
+<div id="htmlwidget-27a6251d00cbd347f90b" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-27a6251d00cbd347f90b">{"x":{"filter":"none","vertical":false,"data":[["TTneg","TTpos"],[366,75]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th>SortPheno<\/th>\n      <th>Nb. Cells<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"<'row'rt>","autoWidth":false,"columnDefs":[{"targets":[0,1],"className":"dt-center"}],"orderClasses":false,"paging":false,"processing":true,"scrollCollapse":true,"scroller":true,"scrollX":true,"scrollY":"525px","stateSave":true,"order":[]}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>#DimPlot(patient.integrated, reduction = &quot;umap&quot;, group.by = &quot;Sample&quot;)  + ggtitle(paste0(&quot;After filtering Plate 4 018 issue Sample: &quot;, length(patient.integrated$Sample)))
+
+clusterCount = as.data.frame( table( ClusterNumber = patient.integrated[[ &quot;Sample&quot; ]]), responseName = &quot;CellCount&quot;);
+# Create datatable
+datatable( clusterCount, 
+           class = &quot;compact&quot;,
+           rownames = FALSE,
+           colnames = c(&quot;Sample&quot;, &quot;Nb. Cells&quot;),
+           options = list(dom = &quot;&lt;&#39;row&#39;rt&gt;&quot;, # Set elements for CSS formatting (&#39;&lt;Blf&gt;&lt;rt&gt;&lt;ip&gt;&#39;)
+                          autoWidth = FALSE,
+                          columnDefs = list( # Center all columns
+                            list( targets = 0:(ncol(clusterCount)-1),
+                                  className = &#39;dt-center&#39;)),
+                          orderClasses = FALSE, # Disable flag for CSS to highlight columns used for ordering (for performance)
+                          paging = FALSE, # Disable pagination (show all)
+                          processing = TRUE, 
+                          scrollCollapse = TRUE,
+                          scroller = TRUE,  # Only load visible data
+                          scrollX = TRUE,
+                          scrollY = &quot;525px&quot;,
+                          stateSave = TRUE));</code></pre>
+<div id="htmlwidget-02880d8cbf9369760f4f" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-02880d8cbf9369760f4f">{"x":{"filter":"none","vertical":false,"data":[["01-004","01-018","01-046","01-051","01-128","01-140"],[80,83,83,85,48,62]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th>Sample<\/th>\n      <th>Nb. Cells<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"<'row'rt>","autoWidth":false,"columnDefs":[{"targets":[0,1],"className":"dt-center"}],"orderClasses":false,"paging":false,"processing":true,"scrollCollapse":true,"scroller":true,"scrollX":true,"scrollY":"525px","stateSave":true,"order":[]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="box-plots-of-gene-set-score" class="section level1">
+<h1>Box plots of gene set score</h1>
+<div id="loading-markers-table" class="section level2">
+<h2>loading markers table</h2>
+<p>markers table 1 : figure 2, marker table 2 : figure 3</p>
+<pre class="r"><code># DEA by Anno_1
+dea_f = read.csv(file = here::here(&quot;data/processed/figure2_group_gene_markers.csv&quot;), header = TRUE)
+Top50_dea_f = dea_f %&gt;% group_by(cluster) %&gt;% top_n(n = 50, wt = avg_log2FC)
+selfAg_df &lt;- Top50_dea_f[Top50_dea_f$cluster == &quot;SLA&quot;,]
+flu_df &lt;- Top50_dea_f[Top50_dea_f$cluster == &quot;FLU&quot;,]
+
+#marker2
+amr053_df = read_excel(here::here(&quot;data/processed/supp_Table7_Rev1.xlsx&quot;), sheet = &quot;Feuil1&quot;)
+amr053_df = na.omit(amr053_df)</code></pre>
+</div>
+<div id="box-plots" class="section level2">
+<h2>Box plots</h2>
+<p>Gene set score Auto-reactivity &amp; H1N1</p>
+<pre class="r"><code>for(name in c(&#39;selfAg&#39;, &#39;flu&#39;)){
+  df = eval(parse(text = paste0(name, &#39;_df&#39;)))
+  patient.integrated &lt;- AddModuleScore(patient.integrated, features = list(df$gene) ,name = name)
+}
+
+metadata_df = patient.integrated@meta.data
+
+title = c(&quot;Auto-reactivity&quot;, &quot;H1N1&quot;)
+i = 1
+for(name in c(&#39;selfAg1&#39;,&#39;flu1&#39;)){
+    p&lt;-ggplot(metadata_df, aes(x=SortPheno, y= eval(parse(text = name)), color=Sample)) +
+      geom_boxplot()+ 
+      #scale_color_manual(values=cols) + 
+      geom_jitter(color=&quot;black&quot;, size=0.4, alpha=0.9) + 
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1))
+    
+    my_comparisons &lt;- list(c(&quot;TTneg&quot; ,  &quot;TTpos&quot;))
+    
+    p &lt;- p + stat_compare_means(comparisons = my_comparisons, label = &quot;p.signif&quot;)
+    
+    if ( i == 1 ){
+        
+      stat = compare_means(selfAg1 ~ SortPheno, data = metadata_df)
+
+    }else{
+      
+      stat = compare_means(flu1 ~ SortPheno, data = metadata_df)
+
+    }
+    
+    print(p + ggtitle(paste0(title[i],&quot;: p.format is &quot;, stat$p.format)))
+    i = i + 1
+}</code></pre>
+<p><img src="figure/03-fig4.Rmd/Boxplots-1.png" width="960" style="display: block; margin: auto;" /><img src="figure/03-fig4.Rmd/Boxplots-2.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-markers" class="section level2">
+<h2>Cluster markers</h2>
+<pre class="r"><code>for(name in c(1:3,5,6)){
+  genes = amr053_df[amr053_df$cluster == name,]$gene
+  
+  if(length(genes) &gt; 50){
+    genes = genes[1:50]
+  }
+  patient.integrated &lt;- AddModuleScore(patient.integrated, features = list(genes) ,name = paste0(&#39;cl&#39;, name))
+}
+
+metadata_df = patient.integrated@meta.data
+
+title = c(&quot;Cluster 1 (TEM GZMK+)&quot;, &quot;Cluster 2 (TCM HLA-DR+)&quot;, &quot;Cluster 3 (TEM NKG7+)&quot;, &quot;Cluster 5 (CTL)&quot;, &quot;Cluster 6 (TREG)&quot;)
+i = 1
+for(name in paste0(&#39;cl&#39;, c(1:3,5,6), &#39;1&#39;)){
+  p&lt;-ggplot(metadata_df, aes(x=SortPheno, y= eval(parse(text = name)), color=SortPheno)) +
+    geom_boxplot()+ 
+    #scale_color_manual(values=cols) + 
+    geom_jitter(color=&quot;black&quot;, size=0.4, alpha=0.9) + 
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1)) 
+  
+  my_comparisons &lt;- list(c(&quot;TTneg&quot; ,  &quot;TTpos&quot;))
+  
+  p &lt;- p + stat_compare_means(comparisons = my_comparisons, label = &quot;p.signif&quot;)
+  
+   if ( i == 1 ){
+        
+      stat = compare_means(cl11 ~ SortPheno, data = metadata_df)
+
+    }else if (i == 2){
+      
+      stat = compare_means(cl21 ~ SortPheno, data = metadata_df)
+
+    }else if (i == 3){
+      
+      stat = compare_means(cl31 ~ SortPheno, data = metadata_df)
+
+    }else if (i == 4){
+      
+      stat = compare_means(cl51 ~ SortPheno, data = metadata_df)
+
+    }else if (i == 5){
+      
+      stat = compare_means(cl61 ~ SortPheno, data = metadata_df)
+
+    }
+    print(p + ggtitle(paste0(title[i],&quot;: p.format is &quot;, stat$p.format)))
+    i = i + 1
+}</code></pre>
+<p><img src="figure/03-fig4.Rmd/cluster-marker-1.png" width="960" style="display: block; margin: auto;" /><img src="figure/03-fig4.Rmd/cluster-marker-2.png" width="960" style="display: block; margin: auto;" /><img src="figure/03-fig4.Rmd/cluster-marker-3.png" width="960" style="display: block; margin: auto;" /><img src="figure/03-fig4.Rmd/cluster-marker-4.png" width="960" style="display: block; margin: auto;" /><img src="figure/03-fig4.Rmd/cluster-marker-5.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save scores 
+df_scores = metadata_df[,c(&quot;UniqueCellID&quot;, &quot;Sample&quot;,&quot;selfAg1&quot;,&quot;flu1&quot;,&quot;cl11&quot;,&quot;cl21&quot;,&quot;cl31&quot;,&quot;cl51&quot;,&quot;cl61&quot;)]
+colnames(df_scores) = c(&quot;UniqueCellID&quot;, &quot;Sample&quot;,&quot;Auto-reactivity&quot;,&quot;H1N1&quot;,&quot;Cluster 1 (TEM GZMK+)&quot;, &quot;Cluster 2 (TCM HLA-DR+)&quot;, &quot;Cluster 3 (TEM NKG7+)&quot;, &quot;Cluster 5 (CTL)&quot;, &quot;Cluster 6 (TREG)&quot;)</code></pre>
+</div>
+</div>
+<div id="figure-4" class="section level1">
+<h1>Figure 4</h1>
+<div id="panel-c" class="section level2">
+<h2>Panel C</h2>
+<pre class="r"><code>my_comparisons &lt;- list(c(&quot;TTneg&quot; ,  &quot;TTpos&quot;))
+p1 &lt;-ggplot(metadata_df, aes(x=SortPheno, y= selfAg1, color=Sample)) +
+      geom_boxplot()+ 
+      #scale_color_manual(values=cols) + 
+      geom_jitter(color=&quot;black&quot;, size=0.4, alpha=0.9) + 
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1))
+    
+p1 &lt;- p1 + stat_compare_means(comparisons = my_comparisons, label = &quot;p.signif&quot;)
+p1 &lt;- p1 + labs(x = &quot;sorting phenotype&quot;, y = &quot;Gene set score&quot;, title = &quot;Auto-reactivity&quot;)
+
+p2 &lt;-ggplot(metadata_df, aes(x=SortPheno, y= flu1, color=Sample)) +
+      geom_boxplot()+ 
+      #scale_color_manual(values=cols) + 
+      geom_jitter(color=&quot;black&quot;, size=0.4, alpha=0.9) + 
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1))
+    
+p2 &lt;- p2 + stat_compare_means(comparisons = my_comparisons, label = &quot;p.signif&quot;)
+p2 &lt;- p2 + labs(x = &quot;sorting phenotype&quot;, y = &quot;Gene set score&quot;, title = &quot;H1N1&quot;)
+
+fig &lt;- plot_grid(p1, p2, nrow = 1, labels = &quot;AUTO&quot;)
+
+ggsave(here::here(&quot;output&quot;, DOCNAME, &quot;figure4-panelC.pdf&quot;), fig,
+        width = 14, height = 8, scale = 1.2)
+ggsave(here::here(&quot;output&quot;, DOCNAME, &quot;figure4-panelC.png&quot;), fig,
+        width = 14, height = 8, scale = 1.2)
+
+fig</code></pre>
+<p><img src="figure/03-fig4.Rmd/fig4-pC-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="panel-d" class="section level2">
+<h2>Panel D</h2>
+<pre class="r"><code>p1&lt;-ggplot(metadata_df, aes(x=SortPheno, y= cl11, color=SortPheno)) +
+    geom_boxplot()+ 
+    geom_jitter(color=&quot;black&quot;, size=0.4, alpha=0.9) + 
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1)) 
+p1 &lt;- p1 + stat_compare_means(comparisons = my_comparisons, label = &quot;p.signif&quot;)
+p1 &lt;- p1 + labs(x = &quot;sorting phenotype&quot;, y = &quot;Gene set score&quot;, title = &quot;Cluster 1 (TEM GZMK+)&quot;)
+
+p2&lt;-ggplot(metadata_df, aes(x=SortPheno, y= cl21, color=SortPheno)) +
+    geom_boxplot()+ 
+    geom_jitter(color=&quot;black&quot;, size=0.4, alpha=0.9) + 
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1)) 
+p2 &lt;- p2 + stat_compare_means(comparisons = my_comparisons, label = &quot;p.signif&quot;)
+p2 &lt;- p2 + labs(x = &quot;sorting phenotype&quot;, y = &quot;Gene set score&quot;, title = &quot;Cluster 2 (TCM HLA-DR+)&quot;)
+
+p3&lt;-ggplot(metadata_df, aes(x=SortPheno, y= cl31, color=SortPheno)) +
+    geom_boxplot()+ 
+    geom_jitter(color=&quot;black&quot;, size=0.4, alpha=0.9) + 
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1)) 
+p3 &lt;- p3 + stat_compare_means(comparisons = my_comparisons, label = &quot;p.signif&quot;)
+p3 &lt;- p3 + labs(x = &quot;sorting phenotype&quot;, y = &quot;Gene set score&quot;, title = &quot;Cluster 3 (TEM NKG7+)&quot;)
+
+p4&lt;-ggplot(metadata_df, aes(x=SortPheno, y= cl51, color=SortPheno)) +
+    geom_boxplot()+ 
+    geom_jitter(color=&quot;black&quot;, size=0.4, alpha=0.9) + 
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1)) 
+p4 &lt;- p4 + stat_compare_means(comparisons = my_comparisons, label = &quot;p.signif&quot;)
+p4 &lt;- p4 + labs(x = &quot;sorting phenotype&quot;, y = &quot;Gene set score&quot;, title = &quot;Cluster 5 (CTL)&quot;)
+
+p5&lt;-ggplot(metadata_df, aes(x=SortPheno, y= cl61, color=SortPheno)) +
+    geom_boxplot()+ 
+    geom_jitter(color=&quot;black&quot;, size=0.4, alpha=0.9) + 
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1)) 
+p5 &lt;- p5 + stat_compare_means(comparisons = my_comparisons, label = &quot;p.signif&quot;)
+p5 &lt;- p5 + labs(x = &quot;sorting phenotype&quot;, y = &quot;Gene set score&quot;, title = &quot;Cluster 6 (Treg)&quot;)
+
+
+fig &lt;- plot_grid(p1, p2, p3, p4, p5, nrow = 2, labels = &quot;AUTO&quot;)
+
+ggsave(here::here(&quot;output&quot;, DOCNAME, &quot;figure4-panelD.pdf&quot;), fig,
+       width = 14, height = 8, scale = 1.3)
+ggsave(here::here(&quot;output&quot;, DOCNAME, &quot;figure4-panelD.png&quot;), fig,
+       width = 14, height = 8, scale = 1.3)
+
+fig</code></pre>
+<p><img src="figure/03-fig4.Rmd/fig4-pD-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="output-files" class="section level1">
+<h1>Output files</h1>
+<pre class="r"><code>write.table(df_scores, here::here(&quot;output&quot;, DOCNAME,&quot;figure4-raw_data.csv&quot;), row.names=FALSE,col.names=TRUE, sep =&#39;,&#39;)
+saveRDS(patient.integrated, here::here(&quot;data/processed/figure4_output_seurat.rds&quot;))
+save(metadata_df, file = here::here(&quot;data/processed/figure4_output_metadata.RData&quot;))</code></pre>
+</div>
+<div id="session-information" class="section level1">
+<h1>Session information</h1>
+<pre class="r"><code>devtools::session_info()</code></pre>
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.1.2 (2021-11-01)
+ os       Ubuntu 20.04.3 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Etc/UTC
+ date     2024-12-24
+ pandoc   2.14.0.3 @ /usr/lib/rstudio-server/bin/pandoc/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package         * version date (UTC) lib source
+ abind             1.4-5   2016-07-21 [1] RSPM (R 4.1.0)
+ assertthat        0.2.1   2019-03-21 [1] RSPM (R 4.1.0)
+ backports         1.4.1   2021-12-13 [1] RSPM (R 4.1.0)
+ brio              1.1.3   2021-11-30 [1] RSPM (R 4.1.0)
+ broom             0.7.12  2022-01-28 [1] RSPM (R 4.1.0)
+ bslib             0.3.1   2021-10-06 [1] RSPM (R 4.1.0)
+ cachem            1.0.6   2021-08-19 [1] RSPM (R 4.1.0)
+ callr             3.7.0   2021-04-20 [1] RSPM (R 4.1.0)
+ car               3.0-12  2021-11-06 [1] RSPM (R 4.1.0)
+ carData           3.0-5   2022-01-06 [1] RSPM (R 4.1.0)
+ cellranger        1.1.0   2016-07-27 [1] RSPM (R 4.1.0)
+ cli               3.6.1   2023-03-23 [1] RSPM (R 4.1.0)
+ cluster           2.1.2   2021-04-17 [2] CRAN (R 4.1.2)
+ codetools         0.2-18  2020-11-04 [2] CRAN (R 4.1.2)
+ colorspace        2.0-3   2022-02-21 [1] RSPM (R 4.1.0)
+ cowplot         * 1.1.1   2020-12-30 [1] RSPM (R 4.1.0)
+ crayon            1.5.0   2022-02-14 [1] RSPM (R 4.1.0)
+ data.table        1.14.2  2021-09-27 [1] RSPM (R 4.1.0)
+ DBI               1.1.2   2021-12-20 [1] RSPM (R 4.1.0)
+ deldir            1.0-6   2021-10-23 [1] RSPM (R 4.1.0)
+ desc              1.4.1   2022-03-06 [1] RSPM (R 4.1.0)
+ devtools          2.4.3   2021-11-30 [1] RSPM (R 4.1.0)
+ digest            0.6.29  2021-12-01 [1] RSPM (R 4.1.0)
+ dplyr           * 1.0.8   2022-02-08 [1] RSPM (R 4.1.0)
+ DT              * 0.22    2022-03-28 [1] RSPM (R 4.1.0)
+ ellipsis          0.3.2   2021-04-29 [1] RSPM (R 4.1.0)
+ evaluate          0.15    2022-02-18 [1] RSPM (R 4.1.0)
+ fansi             1.0.2   2022-01-14 [1] RSPM (R 4.1.0)
+ fastmap           1.1.0   2021-01-25 [1] RSPM (R 4.1.0)
+ fitdistrplus      1.1-6   2021-09-28 [1] RSPM (R 4.1.0)
+ fs                1.5.2   2021-12-08 [1] RSPM (R 4.1.0)
+ future            1.23.0  2021-10-31 [1] RSPM (R 4.1.0)
+ future.apply      1.8.1   2021-08-10 [1] RSPM (R 4.1.0)
+ generics          0.1.2   2022-01-31 [1] RSPM (R 4.1.0)
+ ggplot2         * 3.4.4   2023-10-12 [1] RSPM (R 4.1.0)
+ ggpubr          * 0.4.0   2020-06-27 [1] RSPM (R 4.1.0)
+ ggrepel           0.9.1   2021-01-15 [1] RSPM (R 4.1.0)
+ ggridges          0.5.3   2021-01-08 [1] RSPM (R 4.1.0)
+ ggsignif          0.6.3   2021-09-09 [1] RSPM (R 4.1.0)
+ git2r             0.33.0  2023-11-26 [1] RSPM (R 4.1.0)
+ globals           0.14.0  2020-11-22 [1] RSPM (R 4.1.0)
+ glue              1.6.2   2022-02-24 [1] RSPM (R 4.1.0)
+ goftest           1.2-3   2021-10-07 [1] RSPM (R 4.1.0)
+ gridExtra         2.3     2017-09-09 [1] RSPM (R 4.1.0)
+ gtable            0.3.0   2019-03-25 [1] RSPM (R 4.1.0)
+ here              1.0.1   2020-12-13 [1] RSPM (R 4.1.0)
+ htmltools         0.5.2   2021-08-25 [1] RSPM (R 4.1.0)
+ htmlwidgets       1.5.4   2021-09-08 [1] RSPM (R 4.1.0)
+ httpuv            1.6.5   2022-01-05 [1] RSPM (R 4.1.0)
+ httr              1.4.2   2020-07-20 [1] RSPM (R 4.1.0)
+ ica               1.0-2   2018-05-24 [1] RSPM (R 4.1.0)
+ igraph            1.5.1   2023-08-10 [1] RSPM (R 4.1.0)
+ irlba             2.3.5   2021-12-06 [1] RSPM (R 4.1.0)
+ jquerylib         0.1.4   2021-04-26 [1] RSPM (R 4.1.0)
+ jsonlite          1.8.0   2022-02-22 [1] RSPM (R 4.1.0)
+ KernSmooth        2.23-20 2021-05-03 [2] CRAN (R 4.1.2)
+ knitr           * 1.37    2021-12-16 [1] RSPM (R 4.1.0)
+ later             1.3.0   2021-08-18 [1] RSPM (R 4.1.0)
+ lattice           0.20-45 2021-09-22 [2] CRAN (R 4.1.2)
+ lazyeval          0.2.2   2019-03-15 [1] RSPM (R 4.1.0)
+ leiden            0.3.9   2021-07-27 [1] RSPM (R 4.1.0)
+ lifecycle         1.0.3   2022-10-07 [1] RSPM (R 4.1.0)
+ listenv           0.8.0   2019-12-05 [1] RSPM (R 4.1.0)
+ lmtest            0.9-39  2021-11-07 [1] RSPM (R 4.1.0)
+ magrittr          2.0.2   2022-01-26 [1] RSPM (R 4.1.0)
+ MASS              7.3-54  2021-05-03 [2] CRAN (R 4.1.2)
+ Matrix            1.3-4   2021-06-01 [2] CRAN (R 4.1.2)
+ matrixStats       0.61.0  2021-09-17 [1] RSPM (R 4.1.0)
+ memoise           2.0.1   2021-11-26 [1] RSPM (R 4.1.0)
+ mgcv              1.8-38  2021-10-06 [2] CRAN (R 4.1.2)
+ mime              0.12    2021-09-28 [1] RSPM (R 4.1.0)
+ miniUI            0.1.1.1 2018-05-18 [1] RSPM (R 4.1.0)
+ munsell           0.5.0   2018-06-12 [1] RSPM (R 4.1.0)
+ nlme              3.1-153 2021-09-07 [2] CRAN (R 4.1.2)
+ parallelly        1.30.0  2021-12-17 [1] RSPM (R 4.1.0)
+ patchwork         1.1.1   2020-12-17 [1] RSPM (R 4.1.0)
+ pbapply           1.5-0   2021-09-16 [1] RSPM (R 4.1.0)
+ pillar            1.7.0   2022-02-01 [1] RSPM (R 4.1.0)
+ pkgbuild          1.3.1   2021-12-20 [1] RSPM (R 4.1.0)
+ pkgconfig         2.0.3   2019-09-22 [1] RSPM (R 4.1.0)
+ pkgload           1.2.4   2021-11-30 [1] RSPM (R 4.1.0)
+ plotly            4.10.0  2021-10-09 [1] RSPM (R 4.1.0)
+ plyr              1.8.6   2020-03-03 [1] RSPM (R 4.1.0)
+ png               0.1-7   2013-12-03 [1] RSPM (R 4.1.0)
+ polyclip          1.10-0  2019-03-14 [1] RSPM (R 4.1.0)
+ prettyunits       1.1.1   2020-01-24 [1] RSPM (R 4.1.0)
+ processx          3.5.2   2021-04-30 [1] RSPM (R 4.1.0)
+ promises          1.2.0.1 2021-02-11 [1] RSPM (R 4.1.0)
+ ps                1.6.0   2021-02-28 [1] RSPM (R 4.1.0)
+ purrr             0.3.4   2020-04-17 [1] RSPM (R 4.1.0)
+ R6                2.5.1   2021-08-19 [1] RSPM (R 4.1.0)
+ RANN              2.6.1   2019-01-08 [1] RSPM (R 4.1.0)
+ RColorBrewer      1.1-2   2014-12-07 [1] RSPM (R 4.1.0)
+ Rcpp              1.0.8   2022-01-13 [1] RSPM (R 4.1.0)
+ RcppAnnoy         0.0.19  2021-07-30 [1] RSPM (R 4.1.0)
+ readxl          * 1.3.1   2019-03-13 [1] RSPM (R 4.1.0)
+ remotes           2.4.2   2021-11-30 [1] RSPM (R 4.1.0)
+ reshape2          1.4.4   2020-04-09 [1] RSPM (R 4.1.0)
+ reticulate        1.23    2022-01-14 [1] RSPM (R 4.1.0)
+ rlang             1.1.1   2023-04-28 [1] RSPM (R 4.1.0)
+ rmarkdown         2.11    2021-09-14 [1] RSPM (R 4.1.0)
+ ROCR              1.0-11  2020-05-02 [1] RSPM (R 4.1.0)
+ rpart             4.1-15  2019-04-12 [2] CRAN (R 4.1.2)
+ rprojroot         2.0.2   2020-11-15 [1] RSPM (R 4.1.0)
+ rstatix           0.7.0   2021-02-13 [1] RSPM (R 4.1.0)
+ rstudioapi        0.13    2020-11-12 [1] RSPM (R 4.1.0)
+ Rtsne             0.15    2018-11-10 [1] RSPM (R 4.1.0)
+ sass              0.4.0   2021-05-12 [1] RSPM (R 4.1.0)
+ scales            1.2.1   2022-08-20 [1] RSPM (R 4.1.0)
+ scattermore       0.7     2020-11-24 [1] RSPM (R 4.1.0)
+ sctransform       0.3.3   2022-01-13 [1] RSPM (R 4.1.0)
+ sessioninfo       1.2.2   2021-12-06 [1] RSPM (R 4.1.0)
+ Seurat          * 4.1.0   2022-01-14 [1] RSPM (R 4.1.0)
+ SeuratObject    * 4.0.4   2021-11-23 [1] RSPM (R 4.1.0)
+ shiny             1.7.1   2021-10-02 [1] RSPM (R 4.1.0)
+ spatstat.core     2.3-2   2021-11-26 [1] RSPM (R 4.1.0)
+ spatstat.data     2.1-2   2021-12-17 [1] RSPM (R 4.1.0)
+ spatstat.geom     2.4-0   2022-03-29 [1] RSPM (R 4.1.0)
+ spatstat.sparse   2.1-0   2021-12-17 [1] RSPM (R 4.1.0)
+ spatstat.utils    2.3-0   2021-12-12 [1] RSPM (R 4.1.0)
+ stringi           1.7.6   2021-11-29 [1] RSPM (R 4.1.0)
+ stringr         * 1.4.0   2019-02-10 [1] RSPM (R 4.1.0)
+ survival          3.2-13  2021-08-24 [2] CRAN (R 4.1.2)
+ tensor            1.5     2012-05-05 [1] RSPM (R 4.1.0)
+ testthat          3.1.2   2022-01-20 [1] RSPM (R 4.1.0)
+ tibble            3.1.8   2022-07-22 [1] RSPM (R 4.1.0)
+ tidyr             1.2.0   2022-02-01 [1] RSPM (R 4.1.0)
+ tidyselect        1.1.2   2022-02-21 [1] RSPM (R 4.1.0)
+ usethis           2.1.5   2021-12-09 [1] RSPM (R 4.1.0)
+ utf8              1.2.2   2021-07-24 [1] RSPM (R 4.1.0)
+ uwot              0.1.11  2021-12-02 [1] RSPM (R 4.1.0)
+ vctrs             0.6.4   2023-10-12 [1] RSPM (R 4.1.0)
+ viridisLite       0.4.0   2021-04-13 [1] RSPM (R 4.1.0)
+ withr             2.5.0   2022-03-03 [1] RSPM (R 4.1.0)
+ workflowr         1.7.1   2023-08-23 [1] RSPM (R 4.1.0)
+ xfun              0.30    2022-03-02 [1] RSPM (R 4.1.0)
+ xtable            1.8-4   2019-04-21 [1] RSPM (R 4.1.0)
+ yaml              2.3.5   2022-02-21 [1] RSPM (R 4.1.0)
+ zoo               1.8-9   2021-03-09 [1] RSPM (R 4.1.0)
+
+ [1] /usr/local/lib/R/site-library
+ [2] /usr/local/lib/R/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.1.2 (2021-11-01)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 20.04.3 LTS
+
+Matrix products: default
+BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8    LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] dplyr_1.0.8        DT_0.22            readxl_1.3.1       knitr_1.37         cowplot_1.1.1      ggpubr_0.4.0       ggplot2_3.4.4      SeuratObject_4.0.4 Seurat_4.1.0      
+
+loaded via a namespace (and not attached):
+  [1] backports_1.4.1       workflowr_1.7.1       systemfonts_1.0.4     plyr_1.8.6            igraph_1.5.1          lazyeval_0.2.2        splines_4.1.2         crosstalk_1.2.0       listenv_0.8.0         scattermore_0.7      
+ [11] usethis_2.1.5         digest_0.6.29         htmltools_0.5.2       fansi_1.0.2           magrittr_2.0.2        memoise_2.0.1         tensor_1.5            cluster_2.1.2         ROCR_1.0-11           remotes_2.4.2        
+ [21] globals_0.14.0        matrixStats_0.61.0    spatstat.sparse_2.1-0 prettyunits_1.1.1     colorspace_2.0-3      ggrepel_0.9.1         textshaping_0.3.6     xfun_0.30             callr_3.7.0           crayon_1.5.0         
+ [31] jsonlite_1.8.0        spatstat.data_2.1-2   survival_3.2-13       zoo_1.8-9             glue_1.6.2            polyclip_1.10-0       gtable_0.3.0          leiden_0.3.9          car_3.0-12            pkgbuild_1.3.1       
+ [41] future.apply_1.8.1    abind_1.4-5           scales_1.2.1          DBI_1.1.2             rstatix_0.7.0         miniUI_0.1.1.1        Rcpp_1.0.8            viridisLite_0.4.0     xtable_1.8-4          reticulate_1.23      
+ [51] spatstat.core_2.3-2   htmlwidgets_1.5.4     httr_1.4.2            RColorBrewer_1.1-2    ellipsis_0.3.2        ica_1.0-2             farver_2.1.0          pkgconfig_2.0.3       sass_0.4.0            uwot_0.1.11          
+ [61] deldir_1.0-6          utf8_1.2.2            here_1.0.1            labeling_0.4.2        tidyselect_1.1.2      rlang_1.1.1           reshape2_1.4.4        later_1.3.0           cellranger_1.1.0      munsell_0.5.0        
+ [71] tools_4.1.2           cachem_1.0.6          cli_3.6.1             generics_0.1.2        broom_0.7.12          devtools_2.4.3        ggridges_0.5.3        evaluate_0.15         stringr_1.4.0         fastmap_1.1.0        
+ [81] ragg_1.2.2            yaml_2.3.5            goftest_1.2-3         processx_3.5.2        fs_1.5.2              fitdistrplus_1.1-6    purrr_0.3.4           RANN_2.6.1            pbapply_1.5-0         future_1.23.0        
+ [91] nlme_3.1-153          mime_0.12             brio_1.1.3            compiler_4.1.2        rstudioapi_0.13       plotly_4.10.0         png_0.1-7             ggsignif_0.6.3        testthat_3.1.2        spatstat.utils_2.3-0 
+[101] tibble_3.1.8          bslib_0.3.1           stringi_1.7.6         highr_0.9             ps_1.6.0              desc_1.4.1            lattice_0.20-45       Matrix_1.3-4          vctrs_0.6.4           pillar_1.7.0         
+[111] lifecycle_1.0.3       spatstat.geom_2.4-0   lmtest_0.9-39         jquerylib_0.1.4       RcppAnnoy_0.0.19      data.table_1.14.2     irlba_2.3.5           httpuv_1.6.5          patchwork_1.1.1       R6_2.5.1             
+[121] promises_1.2.0.1      KernSmooth_2.23-20    gridExtra_2.3         parallelly_1.30.0     sessioninfo_1.2.2     codetools_0.2-18      MASS_7.3-54           assertthat_0.2.1      pkgload_1.2.4         rprojroot_2.0.2      
+[131] withr_2.5.0           sctransform_0.3.3     mgcv_1.8-38           parallel_4.1.2        grid_4.1.2            rpart_4.1-15          tidyr_1.2.0           rmarkdown_2.11        carData_3.0-5         Rtsne_0.15           
+[141] git2r_0.33.0          shiny_1.7.1          </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

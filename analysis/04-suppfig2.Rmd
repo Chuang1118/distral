@@ -1,0 +1,190 @@
+---
+title: "Supplementary figure 2"
+---
+
+```{r knitr, include = FALSE}
+DOCNAME = "Suppfigure-2"
+NOW <- Sys.time()
+
+# Time chunks during knitting
+knitr::knit_hooks$set(timeit = function(before) {
+    if (before) {
+        print(paste("Start:", Sys.time()))
+        NOW <<- Sys.time()
+    } else {
+        print(paste("Stop:", Sys.time()))
+        print(Sys.time() - NOW)
+    }
+})
+
+knitr::opts_chunk$set(
+    autodep        = TRUE,
+    cache          = TRUE,
+    cache.path     = paste0("cache/", DOCNAME, "/"),
+    cache.comments = FALSE,
+    echo           = TRUE,
+    error          = FALSE,
+    fig.align      = "center",
+    fig.width      = 10,
+    fig.height     = 8,
+    message        = FALSE,
+    warning        = FALSE,
+    timeit         = TRUE
+)
+```
+
+```{r libaries, cache = FALSE}
+## scRNA-seq
+library(Seurat)
+#packageVersion("Seurat")
+
+# Plotting
+library("ggplot2")
+library(cowplot)
+# Presentation
+library("knitr")
+
+# Others
+library(stringr)
+```
+
+```{r source, cache = FALSE}
+source(here::here("R/00_generalDeps.R"))
+source(here::here("R/output.R"))
+```
+
+```{r depends-paths}
+filt_path <- here::here("data/processed/figure2_output_seurat.rds")
+```
+
+Introduction
+============
+
+In this document we are going to perform plotting supplementary figure 2 panel A 
+using `Seurat`.
+
+
+Loading `seurat` object processed
+```{r load, cache.extra = tools::md5sum(filt_path)}
+if (file.exists(filt_path)) {
+    sc_seurat <- readRDS(filt_path)
+} else {
+    stop("Supplementary figure 2  dataset is missing. ",
+         "Please check Input first.",
+         call. = FALSE)
+}
+```
+
+visualization  
+==============
+
+plot metadata
+
+```{r plot-data}
+
+DimPlot( sc_seurat, label=TRUE, label.size = 8) + 
+         theme( axis.title.x = element_blank(),
+                  axis.title.y = element_blank(),
+                  legend.position = "none") 
+
+clusterName = 7
+clusterCells = which( Idents( sc_seurat) == clusterName);
+
+DimPlot( sc_seurat, reduction = "umap", 
+                  cols="#44444422", 
+                  cells.highlight = clusterCells, 
+                  cols.highlight = "#FF000088", 
+                  sizes.highlight = 1.5, 
+                  order = clusterCells,  # Plot highlighted cells last
+                  group.by=NULL) + 
+           theme( axis.title.x = element_blank(),
+                  axis.title.y = element_blank(),
+                  legend.position = "none") +
+           ggtitle( paste( "Cluster", clusterName))
+
+featuresName = c("TRBV5-6", "TRAV8-4", "PLEK", "PRF1", "NKG7", "CCL5")
+
+FeaturePlot( sc_seurat, features = featuresName, reduction = "umap", order = TRUE) +
+      theme( axis.title.x = element_blank(),
+             axis.title.y = element_blank(),
+             legend.position = "none");
+    
+
+```
+
+
+Supplementary figure 2
+=======
+
+Panel A
+--------------
+
+```{r suppfig2-pA, fig.width = 6, fig.height = 9}
+
+p1 <-DimPlot( sc_seurat, label=TRUE, label.size = 8) + ggtitle("Clusters")+
+         theme( axis.title.x = element_blank(),
+                  axis.title.y = element_blank(),
+                  legend.position = "none") 
+
+p2 <- DimPlot( sc_seurat, reduction = "umap", 
+                  cols="#44444422", 
+                  cells.highlight = clusterCells, 
+                  cols.highlight = "#FF000088", 
+                  sizes.highlight = 1.5, 
+                  order = clusterCells,  # Plot highlighted cells last
+                  group.by=NULL) + 
+           theme( axis.title.x = element_blank(),
+                  axis.title.y = element_blank(),
+                  legend.position = "none") +
+           ggtitle( paste( "Cluster", clusterName))
+
+
+p3 <- FeaturePlot( sc_seurat, features = featuresName[1], reduction = "umap", order = TRUE) +
+      theme( axis.title.x = element_blank(),
+             axis.title.y = element_blank(),
+             legend.position = "none")
+
+p4 <- FeaturePlot( sc_seurat, features = featuresName[2], reduction = "umap", order = TRUE) +
+      theme( axis.title.x = element_blank(),
+             axis.title.y = element_blank(),
+             legend.position = "none")
+
+p5 <- FeaturePlot( sc_seurat, features = featuresName[3], reduction = "umap", order = TRUE) +
+      theme( axis.title.x = element_blank(),
+             axis.title.y = element_blank(),
+             legend.position = "none")
+
+p6 <- FeaturePlot( sc_seurat, features = featuresName[4], reduction = "umap", order = TRUE) +
+      theme( axis.title.x = element_blank(),
+             axis.title.y = element_blank(),
+             legend.position = "none")
+
+p7 <- FeaturePlot( sc_seurat, features = featuresName[5], reduction = "umap", order = TRUE) +
+      theme( axis.title.x = element_blank(),
+             axis.title.y = element_blank(),
+             legend.position = "none")
+
+p8 <- FeaturePlot( sc_seurat, features = featuresName[6], reduction = "umap", order = TRUE) +
+      theme( axis.title.x = element_blank(),
+             axis.title.y = element_blank(),
+             legend.position = "none")
+    
+
+fig <- plot_grid(p1, p2, p3, p4, p5, p6, p7, p8,  nrow = 4, labels = "A")
+
+fig
+
+dir.create(here::here("output", DOCNAME), showWarnings = FALSE)
+
+ggsave(here::here("output", DOCNAME, "suppfigure2-panelA.pdf"), fig,
+        width = 6, height = 9, scale = 1)
+ggsave(here::here("output", DOCNAME, "suppfigure2-panelA.png"), fig,
+        width = 6, height = 9, scale = 1)
+```
+
+Session information
+==============
+
+```{r session-info, cache = FALSE}
+devtools::session_info()
+```

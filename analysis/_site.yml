@@ -1,0 +1,34 @@
+name: "Autoreactive CD4 T cells in liver disease"
+output_dir: "../docs"
+navbar:
+  title: "Autoreactive CD4 T cells in liver disease"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Getting started"
+      href: getting-started.html
+    - text: "Analysis"
+      menu:
+        - text: "Figure 2"
+          href: 02-fig2.html
+        - text: "Figure 4"
+          href: 03-fig4.html
+        - text: "Supplementary figure 2"
+          href: 04-suppfig2.html
+        - text: "Supplementary figure 4"
+          href: 06-suppfig4.html  
+        - text: "Supplementary figure 14"
+          href: 07-suppfig14.html  
+  right:
+    - text: "License"
+      href: license.html
+    - icon: fa-github
+      href: https://github.com/Chuang1118/distal
+output:
+  workflowr::wflow_html:
+    toc: true
+    toc_float: true
+    theme: cosmo
+    highlight: textmate
+    code_folding: hide
+    df_print: paged

@@ -1,0 +1,64 @@
+---
+title: "Home"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: false
+bibliography:
+    - "`r here::here('data/references/references.bib')`"
+---
+
+<!-- # ```{r organoid-img, out.width = "100%", fig.align = "center", echo = FALSE} -->
+<!-- # knitr::include_graphics("../images/Cardon_bioRxiv.png") -->
+<!-- # ``` -->
+
+<!-- [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14516943.svg)](https://zenodo.org/records/14516943) -->
+
+This website displays the analysis code and results reported in the article by Cardon et al.: "Single cell profiling of circulating autoreactive CD4 T cells from patients with autoimmune liver diseases suggests tissue imprinting".
+In that study, the authors performed different scRNA-seq + scTCR-seq analyses on antigen-specific circulating CD4 T cell subsets in autoimmune liver disease (AILD) to identify the transcriptional profile of pathogenic T helper cells and identify liver tissue-imprinted signatures.
+
+Follow the links below to access the different stages of analysis or refer to
+the [Getting started](getting-started.html) page for more details about the
+dataset and how to reproduce the analysis from [the processed data][zenodo].
+
+Analysis
+========
+
+* [Figure 2](02-fig2.html) - Single-cell RNA sequencing of liver-self-antigens specific CD4 T cells.
+* [Figure 4](03-fig4.html) - Single cell transcriptomic analysis 
+  of unstimulated Sepsecs-specific CD4 T cells.
+* [Supplementary figure 2](04-suppfig2.html) - Characterization of the cluster 7 of PDCE2-specific CD4 T cells
+* [Supplementary figure 4](06-suppfig4.html) - Literature-based gene set score analysis of cells from clusters identified in the figure 2F.
+* [Supplementary figure 14](07-suppfig14.html) - Literature-based-gene set score analysis of Tetramer positive or negative cells identified in the figure 4.
+
+Citations
+=========
+
+This website and the analysis code can be cited as:
+
+> Cardon et al.: "Single cell profiling of circulating autoreactive CD4 T cells from patients with autoimmune liver diseases suggests tissue imprinting"
+> DOI: [10.1101/2024.03.26.586770][bioRxiv]
+
+<!-- The data files associated with this analysis can be cited as: -->
+
+<!-- > @Cardon2024-bv -->
+<!-- > DOI: [https://doi.org/10.5281/zenodo.14516943][Zenodo]<br /> -->
+<!-- > @Attaf2020-fi -->
+<!-- > DOI: [https://doi.org/10.3389/fimmu.2020.00216][fb5pseq] -->
+
+
+<!-- If you use this data in an analysis please cite the publications that originally -->
+<!-- described it. -->
+
+<!-- References -->
+<!-- ========== -->
+
+<!-- <div id="refs"></div> -->
+
+<!-- [bioRxiv]: https://www.biorxiv.org/content/10.1101/2024.03.26.586770v3 "bioRxiv" -->
+<!-- [zenodo]: https://doi.org/10.5281/zenodo.14516943 "Zenodo" -->
+<!-- [fb5pseq]: https://doi.org/10.3389/fimmu.2020.00216 "fb5pseq" -->
+
+```{r session-info, eval = FALSE}
+devtools::session_info()
+```
