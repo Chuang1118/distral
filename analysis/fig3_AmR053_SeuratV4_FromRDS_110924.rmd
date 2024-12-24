@@ -1,0 +1,187 @@
+---
+title: Single cell profiling of circulating autoreactive CD4 T cells from patients with autoimmune liver diseases suggests tissue-imprinting
+
+subtitle: Seurat V4 from RDS, R:4.2.2, Seurat:4.4, Azimuth:0.4.5, harmony:1.1.0
+
+author: "Martin Braud"
+
+date:  "`r Sys.Date()`"
+
+output: 
+ html_document:
+  toc: true
+  toc_float: true
+  toc_collapsed: true
+  toc_depth: 5
+  theme: united
+runtime: shiny
+---
+<style type="text/css">
+.main-container {
+  max-width: 1800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
+```{r library_load, echo=FALSE, message=FALSE, warning=FALSE}
+suppressMessages(library('dplyr'))
+suppressMessages(library('Seurat'))
+suppressMessages(library('patchwork'))
+suppressMessages(library('ggplot2'))
+suppressMessages(library('cowplot'))
+suppressMessages(library('reshape2'))
+suppressMessages(library('stringr'))
+suppressMessages(library('harmony'))
+suppressMessages(library('future'))
+suppressMessages(library('RColorBrewer'))
+suppressMessages(library('scales'))
+suppressMessages(library('ggpubr'))
+suppressMessages(library('rstatix'))
+suppressMessages(library('Azimuth'))
+suppressMessages(library('openxlsx2'))
+options(future.globals.maxSize= 2000*1024^2, future.seed=TRUE)
+plan("multicore", workers = 10)
+dir.create('OutFig')
+dir.create('TABLES')
+#Load gene liste for module score
+gene_wb <- wb_load("amR053_List_features_genes_Update_11092024.xlsx")
+```
+
+# Primary analysis used software
+
+> FASTQs demultiplexing : bcl2fast2 v2.0.2
+
+> Alignement, UMI count and cell count : CellRanger v7.0.1
+
+```{r load_RDS, echo=FALSE, message=FALSE, warning=FALSE}
+amr.harmony <- readRDS('RDS/AmR053_harmony_azimuth_V4regRB.rds')
+```
+
+
+```{r UMAP, echo=FALSE, message=FALSE, warning=FALSE}
+# Calculate clusters with resolution of 0.3
+amr.harmony.umap <- DimPlot(amr.harmony, reduction = "umap", seed=42,group.by = "seurat_clusters", pt.size = .1,ncol=2, label=TRUE)
+umaps <- amr.harmony.umap
+ggsave('OutFig/Fig3B_UMAP_cluster.png',umaps,height=10, width=10)
+ggsave('OutFig/Fig3B_UMAP_cluster.svg',umaps,height=10, width=10)
+write.csv(file='TABLES/TCR_per_Cells.csv',
+          amr.harmony@meta.data[c('seurat_clusters','clonotype_id','TCRID',"TRA1","TRAV1","TRAJ1","TRAC","TRB1","TRBV1","TRBD","TRBJ1","TRBC","proportion","doubletTCR","samples")])
+```
+
+```{r markers_HM, echo=FALSE, message=FALSE, warning=FALSE}
+#Indentify marker genes for each cluster
+DefaultAssay(amr.harmony) <- 'SCT'
+amr.harmony.mkrs <-  FindAllMarkers(amr.harmony,assay='SCT', only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+amr.harmony.mkrs_padj <- amr.harmony.mkrs[amr.harmony.mkrs$p_val_adj <0.01 ,]
+amr.harmony.mkrs_padj %>% group_by(cluster) %>% top_n(n = 5, wt = avg_log2FC) -> top5
+heatmap.mkrs <- DoHeatmap(amr.harmony, features=top5$gene, group.by='seurat_clusters')
+write.csv(file='TABLES/Amr053_Cluster_Markers_padj001.csv',x=amr.harmony.mkrs_padj)
+ggsave('OutFig/SuppFig5_Heatmap_cluster.png',heatmap.mkrs,height=15, width=10)
+ggsave('OutFig/SuppFig5_Heatmap_cluster.svg',heatmap.mkrs,height=15, width=10)
+```
+
+```{r markers_DP, echo=FALSE, message=FALSE, warning=FALSE}
+list_feat<- c()
+for(clust in unique(amr.harmony.mkrs_padj$cluster)){
+  top_gene <- subset(amr.harmony.mkrs_padj,cluster==clust)$gene
+  list_feat <- c(list_feat,head(top_gene[!top_gene %in% list_feat],3))
+}
+dot.mkrs <- DotPlot(amr.harmony,features=list_feat, cols='RdBu', dot.scale=12) + RotatedAxis() + ggtitle("Marker genes") + ylab('Clusters')
+ggsave('OutFig/Fig3C_DotPlot_cluster.png',dot.mkrs,height=15, width=20)
+ggsave('OutFig/Fig3C_DotPlot_cluster.svg',dot.mkrs,height=15, width=20)
+```
+
+```{r module_score, echo=FALSE, message=FALSE, warning=FALSE}
+#Genes module autoreactivity
+gene_wb <- wb_load('amR053_List_features_genes.xlsx')
+list_feat_plot <- list()
+list_vlp_plot <- list()
+
+for(sname in gene_wb$sheet_names){
+    list_gene <- wb_to_df(gene_wb,sname,col_names=FALSE)[,1]
+    amr.harmony <- AddModuleScore(amr.harmony, features=list(list_gene), name=sname, search=TRUE)
+}
+names(amr.harmony@meta.data)[grep(paste(gene_wb$sheet_names,collapse='|'),names(amr.harmony@meta.data))] <- gene_wb$sheet_names
+
+for(sname in gene_wb$sheet_names){
+  top95p_auto <- tail(quantile(t(amr.harmony[[sname]]),seq(0,1,0.05)),2)[1]
+  top_cells <- colnames(amr.harmony)[t(amr.harmony[[sname]]) > top95p_auto]
+  pt_size_set <- rep(0.01, dim(amr.harmony)[2])
+  names(pt_size_set) <- colnames(amr.harmony)
+  pt_size_set[top_cells] <- 1
+  ft_modlist_auto <-FeaturePlot(amr.harmony, features=sname, label=TRUE, pt.size=pt_size_set) + 
+    scale_colour_gradientn(colours=rev(brewer.pal(n=11, name="RdBu"))) + 
+    ggtitle(paste(sname,"module score Top50 highlight top 5%",sep=' '))
+  list_feat_plot[[sname]] <- ft_modlist_auto
+  ggsave(paste('OutFig/FigE_UMAP_',sname ,'.png', sep=''),ft_modlist_auto, height=10, width=10)
+  ggsave(paste('OutFig/FigE_UMAP_',sname ,'.svg', sep=''),ft_modlist_auto,height= 10, width=10)
+}
+```
+
+```{r MS_violin, echo=FALSE, message=FALSE, warning=FALSE}
+# List module score  violin Plot pairwise wilcoxon test
+for(sname in gene_wb$sheet_names){
+  mod_score_clust <- amr.harmony[[c(sname,'seurat_clusters')]]
+  names(mod_score_clust) <- c('mod_score','clusters')
+  pwWlcx <- pairwise_wilcox_test(mod_score_clust,formula=mod_score ~ clusters,p.adjust.method = "BH")
+  mod_plot <-  ggviolin(mod_score_clust, x='clusters', y='mod_score',palette=hue_pal()(10), fill='clusters') +
+     ggtitle(sname)
+  mod_plot_pval <- mod_plot + stat_pvalue_manual(pwWlcx, hide.ns = FALSE, y.position=0.5, step.increase=0.05)
+
+  write.csv(file=paste('TABLES/FigE_VlPpvalues_',sname ,'.csv', sep=''),x=as.matrix(pwWlcx))
+  ggsave(paste('OutFig/FigE_VlPpval_',sname ,'.png', sep=''),mod_plot, height=10, width=10)
+  ggsave(paste('OutFig/FigE_VlPpval_',sname ,'.svg', sep=''),mod_plot,height=10, width=10)
+  ggsave(paste('OutFig/FigE_VlP_',sname ,'.png', sep=''),mod_plot_pval, height=10, width=10)
+  ggsave(paste('OutFig/FigE_VlP_',sname ,'.svg', sep=''),mod_plot_pval,height=10, width=10)
+  list_vlp_plot[[sname]] <- mod_plot_pval
+}
+```
+
+
+```{r azimuth, echo=FALSE, message=FALSE, warning=FALSE}
+azm_plot <- DimPlot(amr.harmony, reduction='umap', split.by='predicted.celltype.l2',ncol=4,seed=42)
+ggsave('OutFig/SuppFig6_AzimuthPlot_',sname,azm_plot, height=10, width=10)
+ggsave('OutFig/SuppFig6_AzimuthPlot_',sname,azm_plot,height= 10, width=10)
+```
+
+# Figures for publication
+
+## Figure 3. Tracking TCR clonotypes between liver biopsies and circulating CD4 T cell subsets.
+
+### Figure3-B
+
+```{r fig3B, SupFig5B, echo=FALSE, message=FALSE, warning=FALSE,fig.width=10,fig.heigth=12}
+show(umaps)
+```
+
+### Figure3-C
+
+```{r fig3C, echo=FALSE, message=FALSE, warning=FALSE,fig.width=17,fig.height=13}
+show(dot.mkrs)
+```
+
+### Figure3-E
+
+```{r fig3E, echo=FALSE, message=FALSE, warning=FALSE,fig.width=20,fig.height=10}
+for(sname in gene_wb$sheet_names){
+  show(plot_grid(list_feat_plot[[sname]],list_vlp_plot[[sname]]))
+}
+```
+
+## Supplementary Figures
+
+### Supplementary Figure 5
+
+![](OutFig/SuppFig5_Heatmap_cluster.svg)
+
+
+##" Supplementary Figure 6
+
+```{r Supfig6, echo=FALSE, message=FALSE, warning=FALSE,fig.width=15,fig.height=15}
+show(azm_plot)
+```
+
+```{r version, echo=FALSE, message=FALSE, warning=FALSE}
+sessionInfo()
+```
